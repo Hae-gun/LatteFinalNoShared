@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/tab1"
+        android:enabled="true"
+        android:icon="@drawable/email"
+        android:title="이메일"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/tab2"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="정보"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/tab3"
+        android:icon="@drawable/location"
+        android:enabled="true"
+        android:title="위치"
+        app:showAsAction="always" />
+
+</menu>
