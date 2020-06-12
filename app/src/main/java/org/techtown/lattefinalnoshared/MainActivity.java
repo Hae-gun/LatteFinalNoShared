@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("fser", "Point 1");
         if (Build.VERSION.SDK_INT >= 26) {
-            Log.i("fser", "Point 2");
+            Log.i("fser", "onStart()");
             getApplicationContext().startForegroundService(intent);
         } else {
             getApplicationContext().startService(intent);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+    //Log.i("onCreate()","onCreate()");
 //        if(login==null){
 //            login= new Login();
 //        }

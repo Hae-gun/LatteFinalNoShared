@@ -43,5 +43,11 @@ public class LatteMessage {
         this.code2 = code2;
     }
 
+    public String getJsonData() {
+        return jsonData;
+    }
 
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
 }

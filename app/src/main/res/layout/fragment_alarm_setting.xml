@@ -176,32 +176,37 @@
                 android:text="침대"
                 android:textSize="7pt" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/bedHopeDegree0"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorBeige"
-                android:text="0°" />
-
-            <Button
+                android:background="@drawable/alarm_component_button_selector"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textOff="0°"
+                android:textOn="0°" />
+            <ToggleButton
                 android:id="@+id/bedHopeDegree45"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorBeige"
-                android:text="45°" />
-
-            <Button
+                android:background="@drawable/alarm_component_button_selector"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textOff="45°"
+                android:textOn="45°" />
+            <ToggleButton
                 android:id="@+id/bedHopeDegree90"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorBeige"
-                android:text="90°" />
+                android:background="@drawable/alarm_component_button_selector"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textOff="90°"
+                android:textOn="90°" />
+
         </LinearLayout>
 
         <!--블라인드-->
@@ -232,23 +237,29 @@
                 android:text="블라인드"
                 android:textSize="7pt" />
 
-            <Button
+
+            <ToggleButton
                 android:id="@+id/blindHopeOPEN"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorBeige"
-                android:text="OPEN" />
-
-            <Button
+                android:background="@drawable/alarm_component_button_selector"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textOff="OPEN"
+                android:textOn="OPEN" />
+            <ToggleButton
                 android:id="@+id/blindHopeCLOSE"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorBeige"
-                android:text="CLOSE" />
+                android:background="@drawable/alarm_component_button_selector"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textOff="CLOSE"
+                android:textOn="CLOSE" />
+
+
         </LinearLayout>
 
         <Button

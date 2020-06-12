@@ -276,7 +276,9 @@ public class TCPIPConnectionService extends Service {
                                         Log.i("error", e.toString());
                                     }
                                     if (line.contains("authCode")) {
-                                        String code = gson.fromJson(line, Guest.class).getAuthCode();
+                                        LatteMessage msg = gson.fromJson(line,LatteMessage.class);
+                                        String code = gson.fromJson(msg.getJsonData(), Guest.class).getAuthCode();
+                                        Log.i("AuthCode",code);
                                         if (code.equals(singletoneVO.getMacaddress())) {
                                             singletoneVO.setAuthority(true);
                                         } else {
