@@ -4,6 +4,7 @@ public class SingletoneVO {
     private String Macaddress;
     private String id;
     private String pw;
+    private String userNo;
     private boolean authority;
 
     public static SingletoneVO vo = new SingletoneVO();
@@ -47,5 +48,17 @@ public class SingletoneVO {
 
     public void setAuthority(boolean authority) {
         this.authority = authority;
+    }
+
+    public boolean isAuthority() {
+        return authority;
+    }
+
+    public String getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(String userNo) {
+        this.userNo = userNo;
     }
 }

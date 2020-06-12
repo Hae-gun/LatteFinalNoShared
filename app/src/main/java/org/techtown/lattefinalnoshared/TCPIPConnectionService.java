@@ -46,7 +46,8 @@ public class TCPIPConnectionService extends Service {
     private BroadcastReceiver getDataReceiver;
     private Gson gson = MainActivity.gson;
 
-    private static final String HOST = "70.12.60.97";
+//    private static final String HOST = "70.12.60.97";
+    private static final String HOST = "192.168.35.103";
     private static final int PORT = 55566;
     private static String MACAddress = "";
     private static final String CHANNEL_ID = "ForeGroundServiceChannel";
@@ -130,7 +131,11 @@ public class TCPIPConnectionService extends Service {
                     String message = intent.getStringExtra("blindState");
                     message = "Blind:" + message;
                     send(message);
+                }else if(intent.getStringExtra("Alarm") != null){
+                    String message = intent.getStringExtra("Alarm");
+                    send(message);
                 }
+
                 // 여기서 서버에서 받아온다.
 
 

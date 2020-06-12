@@ -1,20 +1,28 @@
 package org.techtown.lattefinalnoshared.VO;
 
 public class Alarm {
-	private String 	alarmNo;
+//	private String 	alarmNo;
+	private String userNo;
 	private String 	hour;
 	private String 	min;
 	private String 	weeks;
 	private boolean flag;
-	
-	
-	public String getAlarmNo() {
-		return alarmNo;
+
+	public String getUserNo() {
+		return userNo;
 	}
-	
-	public void setAlarmNo(String alarmNo) {
-		this.alarmNo = alarmNo;
+
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
 	}
+
+//	public String getAlarmNo() {
+//		return alarmNo;
+//	}
+//
+//	public void setAlarmNo(String alarmNo) {
+//		this.alarmNo = alarmNo;
+//	}
 	
 	public String getHour() {
 		return hour;
@@ -50,8 +58,12 @@ public class Alarm {
 
 	@Override
 	public String toString() {
-		return "Alarm [alarmNo=" + alarmNo + ", hour=" + hour + ", min=" + min + ", weeks=" + weeks + ", flag=" + flag
-				+ "]";
+		return "Alarm{" +
+				"userNo='" + userNo + '\'' +
+				", hour='" + hour + '\'' +
+				", min='" + min + '\'' +
+				", weeks='" + weeks + '\'' +
+				", flag=" + flag +
+				'}';
 	}
-	
 }
