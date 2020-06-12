@@ -86,10 +86,9 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textOff="토"
                 android:textOn="토" />
-
-
         </LinearLayout>
 
+<!--        조명조절바-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -99,12 +98,12 @@
             android:background="@drawable/roundborder"
             android:orientation="horizontal">
 
-            <!--  토글버튼 참고  https://onemask514.tistory.com/25-->
+
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:src="@drawable/light_on" />
@@ -113,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:text="조명"
                 android:textSize="7pt" />
 
@@ -122,15 +121,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:max="40"
-                android:min="10"
-                android:progress="20"
+                android:max="100"
+                android:min="0"
+                android:progress="70"
                 android:progressDrawable="@drawable/seekbardesign"
                 android:thumb="@drawable/seekbarthumb" />
         </LinearLayout>
 
 
-        <!--    조명조절바-->
+        <!--    침대각도조절-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -141,10 +140,10 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="50dp"
+                android:layout_width="35dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:src="@drawable/bed_icon" />
@@ -153,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:text="침대"
                 android:textSize="7pt" />
 
@@ -161,28 +160,28 @@
                 android:id="@+id/bedHopeDegree0"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/colorBeige"
-                android:text="0º" />
+                android:text="0°" />
 
             <Button
                 android:id="@+id/bedHopeDegree45"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/colorBeige"
-                android:text="45º" />
+                android:text="45°" />
 
             <Button
                 android:id="@+id/bedHopeDegree90"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/colorBeige"
-                android:text="90º" />
+                android:text="90°" />
         </LinearLayout>
 
         <!--블라인드-->
@@ -197,10 +196,10 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:src="@drawable/blind" />
@@ -217,7 +216,7 @@
                 android:id="@+id/blindHopeOPEN"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@color/colorBeige"
                 android:text="OPEN" />

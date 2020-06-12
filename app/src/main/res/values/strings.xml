@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">LatteFinalNoShared</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">LatteRoom말이야</string>
+    <string name="title_reserve">예약확인</string>
+    <string name="title_current">현재상태</string>
+    <string name="title_alarm">알람설정</string>
 </resources>
