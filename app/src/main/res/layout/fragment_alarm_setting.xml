@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +13,22 @@
     android:textAlignment="center"
     android:id="@+id/alarmFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorLightMint"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="알람설정"
+            />
+
+
+    </LinearLayout>
 
         <TimePicker
             android:id="@+id/timePicker"
@@ -158,7 +178,7 @@
 
             <Button
                 android:id="@+id/bedHopeDegree0"
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
@@ -167,7 +187,7 @@
 
             <Button
                 android:id="@+id/bedHopeDegree45"
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
@@ -176,7 +196,7 @@
 
             <Button
                 android:id="@+id/bedHopeDegree90"
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
@@ -214,7 +234,7 @@
 
             <Button
                 android:id="@+id/blindHopeOPEN"
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="15dp"
@@ -223,7 +243,7 @@
 
             <Button
                 android:id="@+id/blindHopeCLOSE"
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
@@ -241,3 +261,4 @@
 
 
 </LinearLayout>
+</ScrollView>
