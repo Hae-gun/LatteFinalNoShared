@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 
 import org.techtown.lattefinalnoshared.MainActivity;
 import org.techtown.lattefinalnoshared.R;
+import org.techtown.lattefinalnoshared.VO.Guest;
+import org.techtown.lattefinalnoshared.VO.SingletoneVO;
 import org.techtown.lattefinalnoshared.VO.UserVO;
 
 
@@ -26,7 +28,7 @@ public class Login extends Fragment{
 
 
     private Gson gson = MainActivity.gson;
-
+    private SingletoneVO singletoneVO = SingletoneVO.getInstance();
 
 
     @Override
@@ -44,11 +46,26 @@ public class Login extends Fragment{
         sendToService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserVO user = new UserVO(idEdit.getText().toString(),pwEdit.getText().toString());
-                String userJson = gson.toJson(user);
+
+
+//                UserVO user = new UserVO(idEdit.getText().toString(),pwEdit.getText().toString());
+
+                String id = idEdit.getText().toString();
+                String pw = pwEdit.getText().toString();
+                singletoneVO.setId(id);
+                singletoneVO.setPw(pw);
+
+                Guest guest = new Guest();
+                guest.setLoginID(id);
+                guest.setLoginPW(pw);
+                guest.setAuthCode(singletoneVO.getMacaddress());
+                Log.i("guest",guest.toString());
+                Log.i("guest",gson.toJson(guest));
+
+                String userJson = gson.toJson(guest);
 
                 Intent i= new Intent("toService");
-                i.putExtra("userVO",userJson);
+                i.putExtra("guestVO",userJson);
                 LocalBroadcastManager.getInstance((MainActivity)getActivity()).sendBroadcast(i);
                 idEdit.setText("");
                 pwEdit.setText("");

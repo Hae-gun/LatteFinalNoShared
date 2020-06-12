@@ -35,18 +35,13 @@ import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Login login= new Login();
-    private RoomList roomList= new RoomList();
-    private RoomCurrentSetting roomCurrentSetting= new RoomCurrentSetting();
-    private AlarmSetting alarmSetting= new AlarmSetting();
+    private Login login = new Login();
+    private RoomList roomList = new RoomList();
+    private RoomCurrentSetting roomCurrentSetting = new RoomCurrentSetting();
+    private AlarmSetting alarmSetting = new AlarmSetting();
     private BottomNavigationView bottomNavigationView;
-
-    private boolean loginSucFlag=false;
     private LinkedList<Integer> navigationSet = new LinkedList<Integer>();
     public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
-
-
-
 
     private BroadcastReceiver checkIdReceiver;
 
@@ -54,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-            super.onStart();
-
+        super.onStart();
 
 //        final Login login = new Login();
 //        final RoomList roomList = new RoomList();
@@ -75,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void enableBottomBar(BottomNavigationView mBottomMenu,boolean enable){
+    private void enableBottomBar(BottomNavigationView mBottomMenu, boolean enable) {
         for (int i = 0; i < mBottomMenu.getMenu().size(); i++) {
             mBottomMenu.getMenu().getItem(i).setEnabled(enable);
         }
@@ -96,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        enableBottomBar(bottomNavigationView,false);
+        enableBottomBar(bottomNavigationView, false);
         //fragList.addLast(login);
-       // navigationSet.addLast(0);
+        // navigationSet.addLast(0);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
 
@@ -107,28 +101,28 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.tab1:
 //                        if(loginSucFlag){
-                            replaceFragment(roomList);
+                        replaceFragment(roomList);
 //                            if(!fragList.getLast().equals(roomList)){
-                            navigationSet.addLast(0);
-                            fragList.addLast(roomList);
+                        navigationSet.addLast(0);
+                        fragList.addLast(roomList);
 //                            }
 //                        }
                         return true;
                     case R.id.tab2:
 //                        if(loginSucFlag){
-                            replaceFragment(roomCurrentSetting);
+                        replaceFragment(roomCurrentSetting);
 //                        if(!fragList.getLast().equals(roomCurrentSetting)) {
-                            navigationSet.addLast(1);
-                            fragList.addLast(roomCurrentSetting);
+                        navigationSet.addLast(1);
+                        fragList.addLast(roomCurrentSetting);
 //                        }
 //                        }
                         return true;
                     case R.id.tab3:
 //                        if(loginSucFlag){
-                            replaceFragment(alarmSetting);
+                        replaceFragment(alarmSetting);
 //                        if(!fragList.getLast().equals(alarmSetting)) {
-                            navigationSet.addLast(2);
-                            fragList.addLast(alarmSetting);
+                        navigationSet.addLast(2);
+                        fragList.addLast(alarmSetting);
 //                        }
 //                        }
                         return true;
@@ -156,8 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 if ("correct".equals(data)) {
                     Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show();
                     replaceFragment(roomList);
-                    enableBottomBar(bottomNavigationView,true);
-                    loginSucFlag= true;
+                    enableBottomBar(bottomNavigationView, true);
 
                     fragList.addLast(login);
                     fragList.addLast(roomList);
@@ -181,18 +174,18 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
 //        fragmentTransaction.replace(R.id.FragmentContainer, fragment).commit();
 //        fragList.addLast(fragment);
-        Log.i("LinkedList","\nfragList: "+fragList.size() + "\nnagivationSet: "+navigationSet.size());
+        Log.i("LinkedList", "\nfragList: " + fragList.size() + "\nnagivationSet: " + navigationSet.size());
         fragmentTransaction.replace(R.id.FragmentContainer, fragment).commitAllowingStateLoss();
 //        fragmentTransaction.add(R.id.FragmentContainer, fragment).commitAllowingStateLoss();
     }
 
     public void backFragment() {
-        if (!fragList.isEmpty()||!navigationSet.isEmpty()) {
+        if (!fragList.isEmpty() || !navigationSet.isEmpty()) {
             Fragment prFragment = fragList.removeLast();
             bottomNavigationView.getMenu().getItem(navigationSet.removeLast()).setChecked(true);
             replaceFragment(prFragment);
-            if(prFragment.equals(login)){
-                enableBottomBar(bottomNavigationView,false);
+            if (prFragment.equals(login)) {
+                enableBottomBar(bottomNavigationView, false);
             }
         } else {
             Toast.makeText(this, "이전 화면이 없습니다.", Toast.LENGTH_SHORT).show();
@@ -207,8 +200,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         backFragment();
-
-
 
 
     }

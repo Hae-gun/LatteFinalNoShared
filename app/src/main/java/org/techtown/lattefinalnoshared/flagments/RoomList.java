@@ -72,6 +72,8 @@ public class RoomList extends Fragment {
     }
 
     public void getData(){
+
+        // 아래 내용을 DB에서 받은값으로 대체함.
         List<String> listTitle = Arrays.asList("1","2","3","4");
         List<String> listDate = Arrays.asList("11","22","33","44");
         List<String> listContent = Arrays.asList("111","222","333","444");

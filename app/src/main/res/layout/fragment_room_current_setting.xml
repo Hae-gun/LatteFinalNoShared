@@ -1,15 +1,347 @@
-<LinearLayout android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/currentFragment"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Room Current Setting Fragment"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="60dp"/>
+        android:layout_marginTop="20dp"
+        android:background="@color/colorLightMint"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/userID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID:userID" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="님, 현재예약하신 방의 정보입니다." />
+
+        <TextView
+            android:id="@+id/roomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="1번방" />
+    </LinearLayout>
+
+
+    <!--    현재상태박스: 센서값받아오기-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/colorBeige"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="온도: " />
+
+            <TextView
+                android:id="@+id/sensorThermo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:sensorThermo" />
+
+            <TextView
+                android:id="@+id/sensorAircon_heater"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:sensorAircon_heater" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="습도: " />
+
+            <TextView
+                android:id="@+id/sensorHumid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:sensorHumid" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="조명: " />
+
+            <TextView
+                android:id="@+id/sensorLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:sensorLight" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="블라인드: " />
+
+            <TextView
+                android:id="@+id/sensorBlind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:sensorBlind" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현관: " />
+
+            <TextView
+                android:id="@+id/sensorDoor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:sensorDoor" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--    외출모드 작동여부-->
+    <TextView
+        android:id="@+id/exitModeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:text="(서버에서 보내줘야됨)외출모드 작동중입니다. \n외출모드 작동시에는 기기조작이 불가합니다."
+        android:textSize="15dp" />
+
+    <!--    온도조절바-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/roundborder"
+        android:orientation="horizontal">
+
+        <!--  토글버튼 참고  https://onemask514.tistory.com/25-->
+        <ToggleButton
+            android:id="@+id/thermoOnOff"
+            android:layout_width="25dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/thermo_selector"
+            android:textOff=""
+            android:textOn="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="온도"
+            android:textSize="7pt" />
+
+        <SeekBar
+            android:id="@+id/thermo_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:max="40"
+            android:min="10"
+            android:progress="20"
+            android:progressDrawable="@drawable/seekbardesign"
+            android:thumb="@drawable/seekbarthumb" />
+    </LinearLayout>
+
+
+    <!--    조명조절바-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/roundborder"
+        android:orientation="horizontal">
+
+        <ToggleButton
+            android:id="@+id/lightOnOff"
+            android:layout_width="25dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/light_selector"
+            android:textOff=""
+            android:textOn="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="조명"
+            android:textSize="7pt" />
+
+        <SeekBar
+            android:id="@+id/light_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:max="100"
+            android:min="0"
+            android:progress="70"
+            android:progressDrawable="@drawable/seekbardesign"
+            android:thumb="@drawable/seekbarthumb" />
+    </LinearLayout>
+
+    <!--블라인드-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/roundborder"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/blind" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:text="블라인드"
+            android:textSize="7pt" />
+
+        <Button
+            android:id="@+id/blindOPEN"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/colorBeige"
+            android:text="OPEN" />
+
+        <Button
+            android:id="@+id/blindCLOSE"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/colorBeige"
+            android:text="CLOSE" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/colorBeige"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="알람상태:" />
+
+                <TextView
+                    android:id="@+id/alarmState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="On" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/alarmTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="06:30" />
+
+            <TextView
+                android:id="@+id/alarmDates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="월,화,수,목,금,토,일" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:gravity="center">
+
+            <ToggleButton
+                android:id="@+id/alarmOnOff"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/alarm_selector"
+                android:textOff=""
+                android:textOn=""/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>

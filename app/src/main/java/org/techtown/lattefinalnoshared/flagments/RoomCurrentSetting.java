@@ -1,33 +1,235 @@
 package org.techtown.lattefinalnoshared.flagments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
+import androidx.core.view.KeyEventDispatcher;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import org.techtown.lattefinalnoshared.MainActivity;
 import org.techtown.lattefinalnoshared.R;
+import org.techtown.lattefinalnoshared.VO.SingletoneVO;
+import org.w3c.dom.Text;
 
 
 public class RoomCurrentSetting extends Fragment {
+
+    private SingletoneVO vo = SingletoneVO.getInstance();
+
+    // TextView Component
+    private TextView userID;
+    private TextView sensorThermo;
+    private TextView sensorAircon_heater;
+    private TextView sensorHumid;
+    private TextView sensorLight;
+    private TextView sensorBlind;
+    private TextView sensorDoor;
+    private TextView exitModeTextView;
+    private TextView roomName;
+
+    // Toggle Button
+    private ToggleButton thermoOnOff;
+    private ToggleButton lightOnOff;
+    private ToggleButton alarmOnOff;
+
+    // SeekBar Component
+    private SeekBar thermo_seekBar;
+    private SeekBar light_seekBar;
+
+    // Button Component
+    private Button blindOPEN;
+    private Button blindCLOSE;
+
+    private BroadcastReceiver currentBroadcastReceiver;
 
     @Override
     public void onStart() {
         super.onStart();
         Intent i = new Intent("toService");
-        i.putExtra("request","RoomCurrentSetting");
-        LocalBroadcastManager.getInstance((MainActivity)getActivity()).sendBroadcast(i);
+        i.putExtra("request", "RoomCurrentSetting");
+        LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
     }
+
+    public String getStringFromIntent(Intent intent, String code) {
+        String result = intent.getExtras().getString(code);
+
+        return result;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_room_current_setting, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_room_current_setting, container, false);
+
+        userID = rootView.findViewById(R.id.userID);
+        sensorThermo = rootView.findViewById(R.id.sensorThermo);
+        sensorAircon_heater = rootView.findViewById(R.id.sensorAircon_heater);
+        sensorHumid = rootView.findViewById(R.id.sensorHumid);
+        sensorLight = rootView.findViewById(R.id.sensorLight);
+        sensorBlind = rootView.findViewById(R.id.sensorBlind);
+        sensorDoor = rootView.findViewById(R.id.sensorDoor);
+        exitModeTextView = rootView.findViewById(R.id.exitModeTextView);
+        roomName = rootView.findViewById(R.id.roomName);
+
+
+        thermoOnOff = rootView.findViewById(R.id.thermoOnOff);
+        lightOnOff = rootView.findViewById(R.id.lightOnOff);
+        alarmOnOff = rootView.findViewById(R.id.alarmOnOff);
+
+
+        // SeekBar Component
+        thermo_seekBar = rootView.findViewById(R.id.thermo_seekBar);
+        light_seekBar = rootView.findViewById(R.id.light_seekBar);
+
+        // Button Component
+        blindOPEN = rootView.findViewById(R.id.blindOPEN);
+        blindCLOSE = rootView.findViewById(R.id.blindCLOSE);
+
+        //  서버에서 받아오는 값 컴포넌트에 지정하는 Broadcast Receiver.
+        currentBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = "";
+                if ((data = getStringFromIntent(intent, "current")) != null) {
+                    sensorDoor.setText(data);
+                    Log.i("inRoomCurrent", "current: " + data);
+                } else if ((data = getStringFromIntent(intent, "lightPower")) != null) {
+                    sensorLight.setText(data);
+                } else if ((data = getStringFromIntent(intent, "blindState")) != null) {
+                    sensorBlind.setText(data);
+                } else if ((data = getStringFromIntent(intent, "userId")) != null) {
+                    userID.setText(data);
+                }
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance((MainActivity) getActivity())
+                .registerReceiver(currentBroadcastReceiver, new IntentFilter("currentRoomSetting"));
+
+        // 서버로 설정값 보내는 컴포넌트 이벤트
+
+        thermo_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        light_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                sendToService("toService", "light_seekBar", "" + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+        sendEvent(thermoOnOff,"onOffState","" + thermoOnOff.isChecked());
+//        thermoOnOff.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.i("onOffState", "" + thermoOnOff.isChecked());
+//            }
+//        });
+
+        sendEvent(lightOnOff,"onOffState","" + lightOnOff.isChecked());
+//        lightOnOff.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.i("onOffState", "" + lightOnOff.isChecked());
+//            }
+//        });
+
+        // 알람 On/Off 서버로 전송
+        sendEvent(alarmOnOff,"onOffState","" + alarmOnOff.isChecked());
+//        alarmOnOff.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.i("onOffState", "" + alarmOnOff.isChecked());
+//            }
+//        });
+
+        // 블라인드 상태 전송
+        sendEvent(blindOPEN,"blindState","OPEN");
+        sendEvent(blindCLOSE,"blindState","CLOSE");
+//        blindOPEN.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendToService("toService", "blindState", "OPEN");
+//            }
+//        });
+
+//        blindCLOSE.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendToService("toService", "blindState", "CLOSE");
+//            }
+//        });
+
+        if(vo.getAuthority()){
+            thermo_seekBar.setEnabled(true);
+            light_seekBar.setEnabled(true);
+            blindOPEN.setEnabled(true);
+            blindCLOSE.setEnabled(true);
+        }else{
+            thermo_seekBar.setEnabled(false);
+            light_seekBar.setEnabled(false);
+            blindOPEN.setEnabled(false);
+            blindCLOSE.setEnabled(false);
+        }
+
+
+
+        return rootView;
+    }
+
+    public void sendToService(String broadName, String code, String data) {
+        Intent i = new Intent(broadName);
+        i.putExtra(code, data);
+        LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
+    }
+
+
+    public void sendEvent(View view,String code,String data){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToService("toService",code,data);
+            }
+        });
     }
 }

@@ -1,5 +1,7 @@
 package org.techtown.lattefinalnoshared.flagments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,7 +18,7 @@ import org.techtown.lattefinalnoshared.R;
 
 public class AlarmSetting extends Fragment {
 
-
+    private BroadcastReceiver alarmBroadcastReceiver;
 
     @Override
     public void onStart() {
@@ -28,7 +30,17 @@ public class AlarmSetting extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        ViewGroup rootView= (ViewGroup)inflater.inflate(R.layout.fragment_alarm_setting, container, false);
+
+
+        alarmBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+            }
+        };
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alarm_setting, container, false);
+        return rootView;
     }
 }

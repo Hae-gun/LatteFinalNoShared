@@ -19,6 +19,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.Gson;
 
+import org.techtown.lattefinalnoshared.VO.Guest;
+import org.techtown.lattefinalnoshared.VO.SingletoneVO;
 import org.techtown.lattefinalnoshared.VO.UserVO;
 
 import java.io.BufferedReader;
@@ -40,20 +42,18 @@ import java.util.concurrent.Executors;
 public class TCPIPConnectionService extends Service {
 
 
-
     private BroadcastReceiver getDataReceiver;
     private Gson gson = MainActivity.gson;
 
     private static final String HOST = "70.12.60.97";
     private static final int PORT = 55566;
-    private String MACAddress = "";
+    private static String MACAddress = "";
     private static final String CHANNEL_ID = "ForeGroundServiceChannel";
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
-
+    private SingletoneVO singletoneVO = SingletoneVO.getInstance();
     private ExecutorService executor;
-
 
 
     private static boolean keepConn = true;
@@ -68,50 +68,66 @@ public class TCPIPConnectionService extends Service {
         super.onCreate();
 
 
-
-        Log.i("fser","Point 4");
+        Log.i("fser", "Point 4");
         start();
         createNotificationChannel();
 
-        Log.i("fser","Point 5");
-        Intent notificationIntent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
-        Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID)
+        Log.i("fser", "Point 5");
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Foreground Service")
                 .setContentIntent(pendingIntent)
                 .build();
-        startForeground(1,notification);
+        startForeground(1, notification);
 
 
-
-        Log.i("fser","Point 6");
+        Log.i("fser", "Point 6");
         getDataReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                // 각 Fragment 에서 받은 데이터를 전송.
+                // json 처리 진행.
                 // 아래서 받은 데이터를 서버로 전송한다.
-                String data = intent.getStringExtra("userVO");
-                Log.i("BroadcastTest", "Data from Fragment: " + data);
-                UserVO vo = gson.fromJson(data, UserVO.class);
-                if(intent.getStringExtra("request")!=null){
+                if (intent.getStringExtra("request") != null) {
                     String request = intent.getStringExtra("request");
                     send(request);
-                    return;
+                } else if (intent.getStringExtra("current") != null) {
+                    String current = intent.getStringExtra("current");
+                    send(current);
+                } else if (intent.getStringExtra("guestVO") != null) {
+                    String data = intent.getStringExtra("guestVO");
+                    Guest guest = gson.fromJson(data,Guest.class);
+
+
+
+
+                    Log.i("BroadcastTest", "guest.toString(): " + guest.toString());
+                    Log.i("BroadcastTest", "data: " + data);
+                    //UserVO vo = gson.fromJson(data, UserVO.class);
+
+                    if ("A".equals(guest.getLoginID())) {
+                        Intent i = new Intent("fromService");
+                        i.putExtra("LoginPermission", "correct");
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+                        send(data);
+                    } else {
+                        Intent i = new Intent("fromService");
+                        i.putExtra("LoginPermission", "cannotLogin");
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+                        send(data);
+                    }
+                }else if (intent.getStringExtra("light_seekBar")!=null){
+                    String light_progress = intent.getStringExtra("light_seekBar");
+                    light_progress = "Light: " + light_progress;
+                    send(light_progress);
+                }else if (intent.getStringExtra("blindState")!=null){
+                    String message = intent.getStringExtra("blindState");
+                    message = "Blind:"+message;
+                    send(message);
                 }
                 // 여기서 서버에서 받아온다.
 
-                if ("Aaaa".equals(vo.getId())) {
-                    Intent i = new Intent("fromService");
-                    i.putExtra("LoginPermission", "correct");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-                    send(data);
-                } else {
-
-                    Intent i = new Intent("fromService");
-                    i.putExtra("LoginPermission", "cannotLogin");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-                    send(data);
-                }
 
             }
         };
@@ -119,7 +135,6 @@ public class TCPIPConnectionService extends Service {
                 .registerReceiver(getDataReceiver, new IntentFilter("toService"));
 
     } // onCreate() end.
-
 
 
     @Nullable
@@ -166,7 +181,7 @@ public class TCPIPConnectionService extends Service {
 //        Log.i("MAC","Point 8");
 //        return result;
         try {
-            Log.i("MAC","Point 2");
+            Log.i("MAC", "Point 2");
             List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface nif : all) {
                 if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
@@ -178,7 +193,7 @@ public class TCPIPConnectionService extends Service {
 
                 StringBuilder res1 = new StringBuilder();
                 for (byte b : macBytes) {
-                    res1.append(String.format("%02X",b));
+                    res1.append(String.format("%02X", b));
                 }
 
 //                if (res1.length() > 0) {
@@ -190,7 +205,7 @@ public class TCPIPConnectionService extends Service {
         } catch (Exception ex) {
             //handle exception
         }
-        Log.i("MAC","Point 3");
+        Log.i("MAC", "Point 3");
         return "";
     } //getLocalMacAddress() end.
 
@@ -200,15 +215,17 @@ public class TCPIPConnectionService extends Service {
     }
 
     private void start() {
-        Log.i("fser","Point 7");
+        Log.i("fser", "Point 7");
         executor = Executors.newFixedThreadPool(3);
 
         Runnable getAddr = new Runnable() {
-            String macAddr= "";
+            String macAddr = "";
+
             @Override
             public void run() {
                 MACAddress = getLocalMacAddress();
-                Log.i("fser","point: "+MACAddress);
+                singletoneVO.setMacaddress(MACAddress);
+                Log.i("fser", "point: " + MACAddress);
                 send(MACAddress);
             }
         };
@@ -221,11 +238,47 @@ public class TCPIPConnectionService extends Service {
                     if (socket != null || close()) {
                         if (connect()) {
                             executor.submit(getAddr);
-                            Log.i("fser","Point 8");
+                            Log.i("fser", "Point 8");
                             while (socket.isConnected() && !socket.isClosed()) {
                                 try {
                                     String line = "";
                                     line = input.readLine();
+                                    Log.i("fromServer",line);
+
+                                    if(line.contains("authCode")){
+                                        String code = gson.fromJson(line,Guest.class).getAuthCode();
+                                        if(code.equals(singletoneVO.getMacaddress())){
+                                            singletoneVO.setAuthority(true);
+                                        }else{
+                                            singletoneVO.setAuthority(false);
+                                        }
+                                        Log.i("Authority",""+singletoneVO.getAuthority());
+                                    }
+
+
+                                    if("RoomCurrentSetting".equals(line)){
+
+                                        makeIntent("currentRoomSetting"
+                                                ,"current", line);
+                                    }else if(line.contains("lightPowerLight:")){
+                                        // 전등파워 Fragment에 전송
+                                        makeIntent("currentRoomSetting"
+                                                ,"lightPower", line);
+                                    }else if(line.contains("BlindState:")){
+                                        // 블라인드 상태 Fragment에 전송
+                                        StringBuilder sb = new StringBuilder(line);
+                                        sb.delete(0,11);
+                                        line = sb.toString();
+                                        makeIntent("currentRoomSetting","blindState",line);
+                                        Log.i("BBBBB",line);
+                                    }else if(line.contains("userId:")){
+                                        // 유저 아이디 Fragment에 전송
+                                        StringBuilder sb = new StringBuilder(line);
+                                        sb.delete(0,7);
+                                        line = sb.toString();
+                                        makeIntent("currentRoomSetting","userId",line);
+                                    }
+
                                     if (line == null) throw new IOException();
                                     else {
                                         Intent sender = new Intent("fromService");
@@ -247,8 +300,6 @@ public class TCPIPConnectionService extends Service {
         };
 
 
-
-
         executor.submit(accept);
     } // start() end.
 
@@ -262,9 +313,9 @@ public class TCPIPConnectionService extends Service {
 
     private boolean connect() {
         try {
-            Log.i("fser","Point 9");
+            Log.i("fser", "Point 9");
             socket = new Socket();
-            socket.connect(new InetSocketAddress(HOST,PORT));
+            socket.connect(new InetSocketAddress(HOST, PORT));
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream());
 
@@ -332,5 +383,10 @@ public class TCPIPConnectionService extends Service {
         }
     } // Sender.class end.
 
+    public void makeIntent(String broadName,String code, String data){
+        Intent i = new Intent(broadName);
+        i.putExtra(code, data);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+    }
 
 }

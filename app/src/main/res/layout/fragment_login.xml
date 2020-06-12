@@ -1,18 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@drawable/splash_base"
     android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp">
+    android:paddingLeft="80dp"
+    android:paddingRight="80dp"
+    android:gravity="center">
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Login Fragment"
-        android:textAlignment="center"
-        android:textSize="60dp" />
+        android:src="@drawable/latteroom_logo_white"
+        android:paddingBottom="60dp"
+        />
+
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Login Fragment"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="60dp" />-->
 
 
     <EditText
@@ -45,7 +53,8 @@
         android:id="@+id/sendToService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log in" />
+        android:text="Log in"
+        android:background="@drawable/buttondesign"/>
 
 
 </LinearLayout>
