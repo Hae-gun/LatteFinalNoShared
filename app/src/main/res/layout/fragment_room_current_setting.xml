@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@color/colorLightMint"
         android:orientation="horizontal"
         android:padding="5dp">
@@ -19,19 +19,22 @@
             android:id="@+id/userID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ID:userID" />
+            android:text="ID:userID"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="님, 현재예약하신 방의 정보입니다." />
+            android:text="님, 현재예약하신 방의 정보입니다."
+            />
 
         <TextView
             android:id="@+id/roomName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
-            android:text="1번방" />
+            android:text="1번방"
+            />
     </LinearLayout>
 
 
@@ -52,7 +55,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="온도: " />
+                android:text="온도: "
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/sensorThermo"
@@ -76,7 +80,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="습도: " />
+                android:text="습도: "
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/sensorHumid"
@@ -93,7 +98,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="조명: " />
+                android:text="조명: "
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/sensorLight"
@@ -110,7 +116,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="블라인드: " />
+                android:text="블라인드: "
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/sensorBlind"
@@ -127,7 +134,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="현관: " />
+                android:text="현관: "
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/sensorDoor"
@@ -143,7 +151,7 @@
         android:id="@+id/exitModeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
+        android:gravity="center_horizontal"
         android:text="(서버에서 보내줘야됨)외출모드 작동중입니다. \n외출모드 작동시에는 기기조작이 불가합니다."
         android:textSize="15dp" />
 
@@ -279,14 +287,23 @@
             android:text="CLOSE" />
     </LinearLayout>
 
-
+<!--알람상태확인-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@color/colorBeige"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/roundborder"
         android:orientation="horizontal"
         android:padding="10dp">
+        <ToggleButton
+            android:id="@+id/alarmOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/alarm_selector"
+            android:textOff=""
+            android:textOn="" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -316,6 +333,8 @@
                 android:layout_height="wrap_content"
                 android:text="06:30" />
 
+
+
             <TextView
                 android:id="@+id/alarmDates"
                 android:layout_width="match_parent"
@@ -324,22 +343,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:textAlignment="center"
-            android:gravity="center">
 
-            <ToggleButton
-                android:id="@+id/alarmOnOff"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/alarm_selector"
-                android:textOff=""
-                android:textOn=""/>
-
-        </LinearLayout>
 
     </LinearLayout>
 

@@ -31,7 +31,8 @@ public class AlarmSetting extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ViewGroup rootView= (ViewGroup)inflater.inflate(R.layout.fragment_alarm_setting, container, false);
+        ViewGroup rootView= (ViewGroup)inflater.inflate(R.layout.fragment_alarm_setting,
+                container, false);
 
 
         alarmBroadcastReceiver = new BroadcastReceiver() {
