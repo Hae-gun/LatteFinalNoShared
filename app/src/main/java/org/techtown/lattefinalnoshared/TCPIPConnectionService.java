@@ -20,6 +20,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.gson.Gson;
 
 import org.techtown.lattefinalnoshared.VO.Guest;
+import org.techtown.lattefinalnoshared.VO.LatteMessage;
 import org.techtown.lattefinalnoshared.VO.SingletoneVO;
 import org.techtown.lattefinalnoshared.VO.UserVO;
 
@@ -96,34 +97,38 @@ public class TCPIPConnectionService extends Service {
                     String current = intent.getStringExtra("current");
                     send(current);
                 } else if (intent.getStringExtra("guestVO") != null) {
-                    String data = intent.getStringExtra("guestVO");
-                    Guest guest = gson.fromJson(data,Guest.class);
+                    String jsonString = intent.getStringExtra("guestVO");
+                    Guest guest = gson.fromJson(jsonString, Guest.class);
 
+                    LatteMessage msg = new LatteMessage(null,
+                            "LOGIN", null, jsonString);
 
+                    String data = gson.toJson(msg, LatteMessage.class);
 
+                    Log.i("LatteMessage", data);
 
                     Log.i("BroadcastTest", "guest.toString(): " + guest.toString());
-                    Log.i("BroadcastTest", "data: " + data);
+                    Log.i("BroadcastTest", "data: " + jsonString);
                     //UserVO vo = gson.fromJson(data, UserVO.class);
-
-                    if ("A".equals(guest.getLoginID())) {
-                        Intent i = new Intent("fromService");
-                        i.putExtra("LoginPermission", "correct");
-                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-                        send(data);
-                    } else {
-                        Intent i = new Intent("fromService");
-                        i.putExtra("LoginPermission", "cannotLogin");
-                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-                        send(data);
-                    }
-                }else if (intent.getStringExtra("light_seekBar")!=null){
+                    send(data);
+//                    if ("A".equals(guest.getLoginID())) {
+//                        Intent i = new Intent("fromService");
+//                        i.putExtra("LoginPermission", "correct");
+//                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+//                        send(data);
+//                    } else {
+//                        Intent i = new Intent("fromService");
+//                        i.putExtra("LoginPermission", "cannotLogin");
+//                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+//                        send(data);
+//                    }
+                } else if (intent.getStringExtra("light_seekBar") != null) {
                     String light_progress = intent.getStringExtra("light_seekBar");
                     light_progress = "Light: " + light_progress;
                     send(light_progress);
-                }else if (intent.getStringExtra("blindState")!=null){
+                } else if (intent.getStringExtra("blindState") != null) {
                     String message = intent.getStringExtra("blindState");
-                    message = "Blind:"+message;
+                    message = "Blind:" + message;
                     send(message);
                 }
                 // 여기서 서버에서 받아온다.
@@ -243,40 +248,65 @@ public class TCPIPConnectionService extends Service {
                                 try {
                                     String line = "";
                                     line = input.readLine();
-                                    Log.i("fromServer",line);
+                                    Log.i("fromServer", line);
 
-                                    if(line.contains("authCode")){
-                                        String code = gson.fromJson(line,Guest.class).getAuthCode();
-                                        if(code.equals(singletoneVO.getMacaddress())){
+
+                                    // 서버에서 받은 Message 객체분해.
+//                                      Intent i = new Intent("fromService");
+//                                      i.putExtra("LoginPermission", "correct");
+//                                      LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+                                    // LatteMessage 완성하면 아래 try catch 문 삭제 예정.
+                                    try {
+                                        LatteMessage msg = gson.fromJson(line, LatteMessage.class);
+                                        String code1 = msg.getCode1();
+                                        String code2 = msg.getCode2();
+
+                                        if ("LOGIN".equals(code1)) {
+                                            if ("SUCCESS".equals(code2)) {
+                                                Intent i = new Intent("fromService");
+                                                i.putExtra("LoginPermission", "correct");
+                                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+                                            }
+                                        } else {
+                                            Intent i = new Intent("fromService");
+                                            i.putExtra("LoginPermission", "cannotLogin");
+                                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+                                        }
+                                    } catch (Exception e) {
+                                        Log.i("error", e.toString());
+                                    }
+                                    if (line.contains("authCode")) {
+                                        String code = gson.fromJson(line, Guest.class).getAuthCode();
+                                        if (code.equals(singletoneVO.getMacaddress())) {
                                             singletoneVO.setAuthority(true);
-                                        }else{
+                                        } else {
                                             singletoneVO.setAuthority(false);
                                         }
-                                        Log.i("Authority",""+singletoneVO.getAuthority());
+                                        Log.i("Authority", "" + singletoneVO.getAuthority());
                                     }
 
 
-                                    if("RoomCurrentSetting".equals(line)){
+                                    if ("RoomCurrentSetting".equals(line)) {
 
                                         makeIntent("currentRoomSetting"
-                                                ,"current", line);
-                                    }else if(line.contains("lightPowerLight:")){
+                                                , "current", line);
+                                    } else if (line.contains("lightPowerLight:")) {
                                         // 전등파워 Fragment에 전송
                                         makeIntent("currentRoomSetting"
-                                                ,"lightPower", line);
-                                    }else if(line.contains("BlindState:")){
+                                                , "lightPower", line);
+                                    } else if (line.contains("BlindState:")) {
                                         // 블라인드 상태 Fragment에 전송
                                         StringBuilder sb = new StringBuilder(line);
-                                        sb.delete(0,11);
+                                        sb.delete(0, 11);
                                         line = sb.toString();
-                                        makeIntent("currentRoomSetting","blindState",line);
-                                        Log.i("BBBBB",line);
-                                    }else if(line.contains("userId:")){
+                                        makeIntent("currentRoomSetting", "blindState", line);
+                                        Log.i("BBBBB", line);
+                                    } else if (line.contains("userId:")) {
                                         // 유저 아이디 Fragment에 전송
                                         StringBuilder sb = new StringBuilder(line);
-                                        sb.delete(0,7);
+                                        sb.delete(0, 7);
                                         line = sb.toString();
-                                        makeIntent("currentRoomSetting","userId",line);
+                                        makeIntent("currentRoomSetting", "userId", line);
                                     }
 
                                     if (line == null) throw new IOException();
@@ -383,7 +413,7 @@ public class TCPIPConnectionService extends Service {
         }
     } // Sender.class end.
 
-    public void makeIntent(String broadName,String code, String data){
+    public void makeIntent(String broadName, String code, String data) {
         Intent i = new Intent(broadName);
         i.putExtra(code, data);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);

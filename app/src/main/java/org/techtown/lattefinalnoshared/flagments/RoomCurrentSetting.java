@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.core.view.KeyEventDispatcher;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -23,6 +24,10 @@ import org.techtown.lattefinalnoshared.MainActivity;
 import org.techtown.lattefinalnoshared.R;
 import org.techtown.lattefinalnoshared.VO.SingletoneVO;
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RoomCurrentSetting extends Fragment {
@@ -54,6 +59,11 @@ public class RoomCurrentSetting extends Fragment {
     private Button blindCLOSE;
 
     private BroadcastReceiver currentBroadcastReceiver;
+    private Map<String,View> componentMap = new HashMap<String,View>();
+//    private Map<View,Integer> componentSet = new HashMap<View,Integer>();
+
+
+
 
     @Override
     public void onStart() {
@@ -68,28 +78,51 @@ public class RoomCurrentSetting extends Fragment {
 
         return result;
     }
+    public boolean getStringFromIntent(String data, Intent intent,String code){
+        if((data=intent.getExtras().getString(code))!=null){
+            return true;
+        }else{
+            return false;
+        }
 
+    }
+
+
+//    public void setCurrentReceiver(Intent intent,HashMap<String,View> hashMap){
+//            for(Map map : hashMap){
+//
+//            }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_room_current_setting, container, false);
+//        componentSet.put(userID,R.id.userID);
+
 
         userID = rootView.findViewById(R.id.userID);
+        componentMap.put("userID",userID);
         sensorThermo = rootView.findViewById(R.id.sensorThermo);
+        componentMap.put("sensorThermo",sensorThermo);
         sensorAircon_heater = rootView.findViewById(R.id.sensorAircon_heater);
+        componentMap.put("sensorAircon_heater",sensorAircon_heater);
         sensorHumid = rootView.findViewById(R.id.sensorHumid);
+        componentMap.put("sensorHumid",sensorHumid);
         sensorLight = rootView.findViewById(R.id.sensorLight);
+        componentMap.put("lightPower",sensorLight);
         sensorBlind = rootView.findViewById(R.id.sensorBlind);
+        componentMap.put("blindState",sensorBlind);
         sensorDoor = rootView.findViewById(R.id.sensorDoor);
+        componentMap.put("sensorDoor",sensorDoor);
         exitModeTextView = rootView.findViewById(R.id.exitModeTextView);
+        componentMap.put("exitModeTextView",exitModeTextView);
         roomName = rootView.findViewById(R.id.roomName);
-
+        componentMap.put("roomName",roomName);
 
         thermoOnOff = rootView.findViewById(R.id.thermoOnOff);
         lightOnOff = rootView.findViewById(R.id.lightOnOff);
         alarmOnOff = rootView.findViewById(R.id.alarmOnOff);
-
 
         // SeekBar Component
         thermo_seekBar = rootView.findViewById(R.id.thermo_seekBar);
@@ -104,7 +137,8 @@ public class RoomCurrentSetting extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String data = "";
-                if ((data = getStringFromIntent(intent, "current")) != null) {
+//                if ((data = getStringFromIntent(intent, "current")) != null) {
+                if(getStringFromIntent(data,intent, "current")){
                     sensorDoor.setText(data);
                     Log.i("inRoomCurrent", "current: " + data);
                 } else if ((data = getStringFromIntent(intent, "lightPower")) != null) {
