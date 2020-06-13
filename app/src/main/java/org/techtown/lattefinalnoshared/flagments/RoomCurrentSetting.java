@@ -44,11 +44,13 @@ public class RoomCurrentSetting extends Fragment {
     private TextView sensorDoor;
     private TextView exitModeTextView;
     private TextView roomName;
+    private TextView thermo_sbValue;
 
     // Toggle Button
-    private ToggleButton thermoOnOff;
     private ToggleButton lightOnOff;
     private ToggleButton alarmOnOff;
+    private ToggleButton blindHopeOPEN;
+    private ToggleButton blindHopeCLOSE;
 
     // SeekBar Component
     private SeekBar thermo_seekBar;
@@ -61,6 +63,7 @@ public class RoomCurrentSetting extends Fragment {
     private BroadcastReceiver currentBroadcastReceiver;
     private Map<String,View> componentMap = new HashMap<String,View>();
 //    private Map<View,Integer> componentSet = new HashMap<View,Integer>();
+    private String blindState="";
 
 
 
@@ -119,18 +122,20 @@ public class RoomCurrentSetting extends Fragment {
         componentMap.put("exitModeTextView",exitModeTextView);
         roomName = rootView.findViewById(R.id.roomName);
         componentMap.put("roomName",roomName);
+        thermo_sbValue = rootView.findViewById(R.id.thermo_sbValue);
 
-        thermoOnOff = rootView.findViewById(R.id.thermoOnOff);
         lightOnOff = rootView.findViewById(R.id.lightOnOff);
         alarmOnOff = rootView.findViewById(R.id.alarmOnOff);
 
         // SeekBar Component
         thermo_seekBar = rootView.findViewById(R.id.thermo_seekBar);
-        light_seekBar = rootView.findViewById(R.id.light_seekBar);
+        light_seekBar = rootView.findViewById(R.id.hope_light_seekBar);
+
+
 
         // Button Component
-        blindOPEN = rootView.findViewById(R.id.blindOPEN);
-        blindCLOSE = rootView.findViewById(R.id.blindCLOSE);
+        blindOPEN = rootView.findViewById(R.id.blindHopeOPEN);
+        blindCLOSE = rootView.findViewById(R.id.blindHopeCLOSE);
 
         //  서버에서 받아오는 값 컴포넌트에 지정하는 Broadcast Receiver.
         currentBroadcastReceiver = new BroadcastReceiver() {
@@ -160,7 +165,7 @@ public class RoomCurrentSetting extends Fragment {
         thermo_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                thermo_sbValue.setText(progress + "°C");
             }
 
             @Override
@@ -192,7 +197,7 @@ public class RoomCurrentSetting extends Fragment {
         });
 
 
-        sendEvent(thermoOnOff,"onOffState","" + thermoOnOff.isChecked());
+//        sendEvent(thermoOnOff,"onOffState","" + thermoOnOff.isChecked());
 //        thermoOnOff.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -233,6 +238,21 @@ public class RoomCurrentSetting extends Fragment {
 //                sendToService("toService", "blindState", "CLOSE");
 //            }
 //        });
+
+        blindHopeOPEN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blindState = blindHopeOPEN.getTextOn().toString();
+                blindHopeCLOSE.setChecked(false);
+            }
+        });
+        blindHopeCLOSE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blindState = blindHopeCLOSE.getTextOn().toString();
+                blindHopeOPEN.setChecked(false);
+            }
+        });
 
         if(vo.getAuthority()){
             thermo_seekBar.setEnabled(true);
