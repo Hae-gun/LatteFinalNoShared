@@ -46,8 +46,8 @@ public class TCPIPConnectionService extends Service {
     private BroadcastReceiver getDataReceiver;
     private Gson gson = MainActivity.gson;
 
-//    private static final String HOST = "70.12.60.97";
-    private static final String HOST = "192.168.35.103";
+    private static final String HOST = "70.12.60.97";
+//    private static final String HOST = "192.168.35.103";
     private static final int PORT = 55566;
     private static String MACAddress = "";
     private static final String CHANNEL_ID = "ForeGroundServiceChannel";
@@ -131,8 +131,11 @@ public class TCPIPConnectionService extends Service {
                     String message = intent.getStringExtra("blindState");
                     message = "Blind:" + message;
                     send(message);
-                }else if(intent.getStringExtra("Alarm") != null){
-                    String message = intent.getStringExtra("Alarm");
+                }else if(intent.getStringExtra("setAlarm") != null){
+                    String message = intent.getStringExtra("setAlarm");
+                    send(message);
+                }else if(intent.getStringExtra("getAlarm")!=null){
+                    String message = intent.getStringExtra("getAlarm");
                     send(message);
                 }
 
@@ -244,7 +247,7 @@ public class TCPIPConnectionService extends Service {
             @Override
             public void run() {
                 do {
-
+                    Log.i("connection","connecting");
                     if (socket != null || close()) {
                         if (connect()) {
                             executor.submit(getAddr);
@@ -267,15 +270,29 @@ public class TCPIPConnectionService extends Service {
                                         String code2 = msg.getCode2();
 
                                         if ("LOGIN".equals(code1)) {
+                                            Guest guest = gson.fromJson(msg.getJsonData(),Guest.class);
+
+                                            singletoneVO.setUserNo(guest.getUserNo());
+                                            singletoneVO.setId(guest.getLoginID());
+                                            singletoneVO.setRole(guest.getRole());
+                                            // 2020-06-13 17:38 유저정보 화면에 표시......
+                                            //
+                                            //
+                                            //
+                                            //
+                                            //
+                                            msg.setJsonData(gson.toJson(guest));
+
+
                                             if ("SUCCESS".equals(code2)) {
                                                 Intent i = new Intent("fromService");
-                                                i.putExtra("LoginPermission", "correct");
+                                                i.putExtra("LoginPermission", gson.toJson(msg));
+                                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+                                            }else {
+                                                Intent i = new Intent("fromService");
+                                                i.putExtra("LoginPermission", "cannotLogin");
                                                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
                                             }
-                                        } else {
-                                            Intent i = new Intent("fromService");
-                                            i.putExtra("LoginPermission", "cannotLogin");
-                                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
                                         }
                                     } catch (Exception e) {
                                         Log.i("error", e.toString());
@@ -314,6 +331,11 @@ public class TCPIPConnectionService extends Service {
                                         sb.delete(0, 7);
                                         line = sb.toString();
                                         makeIntent("currentRoomSetting", "userId", line);
+                                    } else if(line.contains("Alarm")&&!line.contains("AlarmJob")&&line.contains("get")){
+                                        Log.i("alarmmm","setting");
+                                        makeIntent("alarmDetail","setAlarmTime",line);
+                                    } else if(line.contains("AlarmJob")&&line.contains("get")){
+                                        makeIntent("alarmDetail","setAlarmData",line);
                                     }
 
                                     if (line == null) throw new IOException();
@@ -326,9 +348,13 @@ public class TCPIPConnectionService extends Service {
                                     Log.i("connect/TCP", "Service - Runnable accept() : " + e);
                                     close();
                                 }
+//                                Log.i("connection","connecting1");
                             }
+//                            Log.i("connection","connecting2");
                         }
+//                        Log.i("connection","connecting3");
                     }
+//                    Log.i("connection","connecting4");
                     notifyAll();
                 } while (keepConn);
                 stop();

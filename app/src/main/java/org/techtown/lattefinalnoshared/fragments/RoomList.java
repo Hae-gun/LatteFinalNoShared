@@ -1,10 +1,8 @@
-package org.techtown.lattefinalnoshared.flagments;
+package org.techtown.lattefinalnoshared.fragments;
 
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,13 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 
 import org.techtown.lattefinalnoshared.MainActivity;
 import org.techtown.lattefinalnoshared.R;
+import org.techtown.lattefinalnoshared.VO.LatteMessage;
 import org.techtown.lattefinalnoshared.VO.RoomListData;
+import org.techtown.lattefinalnoshared.VO.SingletoneVO;
 import org.techtown.lattefinalnoshared.adapter.RecyclerAdapter;
 
 import java.util.Arrays;
@@ -31,7 +28,7 @@ public class RoomList extends Fragment {
 
 
     private RecyclerAdapter adapter;
-
+    private SingletoneVO vo = SingletoneVO.getInstance();
 
 //    private ImageView roomListImg;
     @Override
@@ -58,6 +55,12 @@ public class RoomList extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+
+        LatteMessage lmsg = new LatteMessage(vo.getUserNo(),"ReserveList",null,null);
+
+
+
         Intent i = new Intent("toService");
         i.putExtra("request","roomList");
         LocalBroadcastManager.getInstance((MainActivity)getActivity()).sendBroadcast(i);

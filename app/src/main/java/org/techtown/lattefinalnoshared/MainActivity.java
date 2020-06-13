@@ -16,22 +16,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.techtown.lattefinalnoshared.flagments.AlarmSetting;
-import org.techtown.lattefinalnoshared.flagments.Login;
-import org.techtown.lattefinalnoshared.flagments.Position;
-import org.techtown.lattefinalnoshared.flagments.RoomCurrentSetting;
-import org.techtown.lattefinalnoshared.flagments.RoomList;
+import org.techtown.lattefinalnoshared.VO.Guest;
+import org.techtown.lattefinalnoshared.VO.LatteMessage;
+import org.techtown.lattefinalnoshared.VO.SingletoneVO;
+import org.techtown.lattefinalnoshared.fragments.AlarmSetting;
+import org.techtown.lattefinalnoshared.fragments.Login;
+import org.techtown.lattefinalnoshared.fragments.RoomCurrentSetting;
+import org.techtown.lattefinalnoshared.fragments.RoomList;
 
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private LinkedList<Integer> navigationSet = new LinkedList<Integer>();
     public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
-
+    private SingletoneVO vo = SingletoneVO.getInstance();
     private BroadcastReceiver checkIdReceiver;
 
     private static LinkedList<Fragment> fragList = new LinkedList<Fragment>();
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    //Log.i("onCreate()","onCreate()");
+        //Log.i("onCreate()","onCreate()");
 //        if(login==null){
 //            login= new Login();
 //        }
@@ -146,19 +145,27 @@ public class MainActivity extends AppCompatActivity {
         checkIdReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String data = intent.getExtras().getString("LoginPermission");
-                if ("correct".equals(data)) {
-                    Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show();
-                    replaceFragment(roomList);
-                    enableBottomBar(bottomNavigationView, true);
+                String data = "";
+                if ((data = intent.getExtras().getString("LoginPermission")) != null) {
+                    LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
+                    String code2 = lmsg.getCode2();
+                    if ("SUCCESS".equals(code2)) {
 
-                    fragList.addLast(login);
-                    fragList.addLast(roomList);
-                    navigationSet.addLast(0);
-                    navigationSet.addLast(0);
 
-                } else if ("cannotLogin".equals(data)) {
-                    Toast.makeText(context, "아이디 또는 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
+                        Log.i("loginSuc",data);
+                        Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show();
+                        replaceFragment(roomList);
+                        enableBottomBar(bottomNavigationView, true);
+
+                        fragList.addLast(login);
+                        fragList.addLast(roomList);
+                        navigationSet.addLast(0);
+                        navigationSet.addLast(0);
+
+                    } else if ("cannotLogin".equals(data)) {
+                        Log.i("cannotLogin",data);
+                        Toast.makeText(context, "아이디 또는 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         };

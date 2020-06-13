@@ -1,7 +1,5 @@
-package org.techtown.lattefinalnoshared.flagments;
+package org.techtown.lattefinalnoshared.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,7 +19,6 @@ import org.techtown.lattefinalnoshared.MainActivity;
 import org.techtown.lattefinalnoshared.R;
 import org.techtown.lattefinalnoshared.VO.Guest;
 import org.techtown.lattefinalnoshared.VO.SingletoneVO;
-import org.techtown.lattefinalnoshared.VO.UserVO;
 
 
 public class Login extends Fragment{

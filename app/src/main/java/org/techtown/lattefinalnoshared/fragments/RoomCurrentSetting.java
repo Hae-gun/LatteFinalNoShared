@@ -1,4 +1,4 @@
-package org.techtown.lattefinalnoshared.flagments;
+package org.techtown.lattefinalnoshared.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import androidx.core.view.KeyEventDispatcher;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -20,12 +18,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.gson.Gson;
+
 import org.techtown.lattefinalnoshared.MainActivity;
 import org.techtown.lattefinalnoshared.R;
+import org.techtown.lattefinalnoshared.VO.LatteMessage;
+import org.techtown.lattefinalnoshared.VO.Room;
 import org.techtown.lattefinalnoshared.VO.SingletoneVO;
-import org.w3c.dom.Text;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +60,8 @@ public class RoomCurrentSetting extends Fragment {
 
     private BroadcastReceiver currentBroadcastReceiver;
     private Map<String,View> componentMap = new HashMap<String,View>();
+
+    private Gson gson = MainActivity.gson;
 //    private Map<View,Integer> componentSet = new HashMap<View,Integer>();
 
 
@@ -68,9 +70,9 @@ public class RoomCurrentSetting extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Intent i = new Intent("toService");
-        i.putExtra("request", "RoomCurrentSetting");
-        LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
+//        Intent i = new Intent("toService");
+//        i.putExtra("request", "RoomCurrentSetting");
+//        LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
     }
 
     public String getStringFromIntent(Intent intent, String code) {
@@ -102,6 +104,7 @@ public class RoomCurrentSetting extends Fragment {
 
 
         userID = rootView.findViewById(R.id.userID);
+
         componentMap.put("userID",userID);
         sensorThermo = rootView.findViewById(R.id.sensorThermo);
         componentMap.put("sensorThermo",sensorThermo);
@@ -137,12 +140,18 @@ public class RoomCurrentSetting extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String data = "";
+
+                Log.i("BBBBBB",vo.getId());
+
+
+
 //                if ((data = getStringFromIntent(intent, "current")) != null) {
                 if(getStringFromIntent(data,intent, "current")){
                     sensorDoor.setText(data);
                     Log.i("inRoomCurrent", "current: " + data);
                 } else if ((data = getStringFromIntent(intent, "lightPower")) != null) {
                     sensorLight.setText(data);
+                    userID.setText(vo.getId());
                 } else if ((data = getStringFromIntent(intent, "blindState")) != null) {
                     sensorBlind.setText(data);
                 } else if ((data = getStringFromIntent(intent, "userId")) != null) {
@@ -177,6 +186,13 @@ public class RoomCurrentSetting extends Fragment {
         light_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+
+
+
+                sendToService("toService", "Control", "" + progress);
+
+
                 sendToService("toService", "light_seekBar", "" + progress);
             }
 
@@ -246,7 +262,21 @@ public class RoomCurrentSetting extends Fragment {
             blindCLOSE.setEnabled(false);
         }
 
+        // 초기셋팅 위한 요청 메세지 작성
 
+        Room room = new Room();
+        vo.setRoomNo("R000123");
+        //여기서 날짜 비교해서 룸객체 보내기.
+
+        room.setRoomNo(vo.getRoomNo());
+
+        LatteMessage lmsg= new LatteMessage(vo.getUserNo(),"RoomDetail",null,gson.toJson(room));
+
+
+
+
+
+        sendToService("toService","request",gson.toJson(lmsg));
 
         return rootView;
     }
@@ -266,4 +296,8 @@ public class RoomCurrentSetting extends Fragment {
             }
         });
     }
+
+
+
+
 }
