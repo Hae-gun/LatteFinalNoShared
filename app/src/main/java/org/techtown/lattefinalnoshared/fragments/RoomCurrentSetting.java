@@ -57,8 +57,8 @@ public class RoomCurrentSetting extends Fragment {
     private SeekBar light_seekBar;
 
     // Button Component
-    private Button blindOPEN;
-    private Button blindCLOSE;
+    private ToggleButton blindOPEN;
+    private ToggleButton blindCLOSE;
 
     private BroadcastReceiver currentBroadcastReceiver;
     private Map<String,View> componentMap = new HashMap<String,View>();
@@ -255,20 +255,20 @@ public class RoomCurrentSetting extends Fragment {
 //            }
 //        });
 
-        blindHopeOPEN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                blindState = blindHopeOPEN.getTextOn().toString();
-                blindHopeCLOSE.setChecked(false);
-            }
-        });
-        blindHopeCLOSE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                blindState = blindHopeCLOSE.getTextOn().toString();
-                blindHopeOPEN.setChecked(false);
-            }
-        });
+//        blindHopeOPEN.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                blindState = blindHopeOPEN.getTextOn().toString();
+//                blindHopeCLOSE.setChecked(false);
+//            }
+//        });
+//        blindHopeCLOSE.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                blindState = blindHopeCLOSE.getTextOn().toString();
+//                blindHopeOPEN.setChecked(false);
+//            }
+//        });
 
         if(vo.getAuthority()){
             thermo_seekBar.setEnabled(true);

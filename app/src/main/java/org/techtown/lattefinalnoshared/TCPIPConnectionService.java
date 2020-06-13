@@ -46,13 +46,10 @@ public class TCPIPConnectionService extends Service {
     private BroadcastReceiver getDataReceiver;
     private Gson gson = MainActivity.gson;
 
-<<<<<<< HEAD
-    private static final String HOST = "70.12.60.97";
-//    private static final String HOST = "192.168.35.103";
-=======
+
       private static final String HOST = "70.12.60.97";
     //private static final String HOST = "192.168.35.103";
->>>>>>> 8331d018231a60604e4bde004c5f333e9f4e0191
+
     private static final int PORT = 55566;
     private static String MACAddress = "";
     private static final String CHANNEL_ID = "ForeGroundServiceChannel";
