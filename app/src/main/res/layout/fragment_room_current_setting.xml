@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="님, 현재예약하신 방의 정보입니다."
+            android:text="님, 현재 사용중인 방의 정보입니다."
             />
 
         <TextView
@@ -164,27 +164,31 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/roundborder"
         android:orientation="horizontal">
-
-        <!--  토글버튼 참고  https://onemask514.tistory.com/25-->
-        <ToggleButton
-            android:id="@+id/thermoOnOff"
+        <ImageView
             android:layout_width="25dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/thermo_selector"
-            android:textOff=""
-            android:textOn="" />
-
-        <TextView
+            android:src="@drawable/thermo_on"/>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:text="온도"
-            android:textSize="7pt" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:text="온도"
+                android:textSize="7pt" />
+            <TextView
+                android:id="@+id/thermo_sbValue"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="ID:thermo_sbvalue"
+                />
+        </LinearLayout>
 
         <SeekBar
             android:id="@+id/thermo_seekBar"
@@ -208,7 +212,6 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/roundborder"
         android:orientation="horizontal">
-
         <ToggleButton
             android:id="@+id/lightOnOff"
             android:layout_width="25dp"
@@ -220,17 +223,24 @@
             android:background="@drawable/light_selector"
             android:textOff=""
             android:textOn="" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:text="조명"
-            android:textSize="7pt" />
-
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:text="조명"
+                android:textSize="7pt" />
+            <TextView
+                android:id="@+id/lightPower"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="ID:lightpower"/>
+        </LinearLayout>
         <SeekBar
-            android:id="@+id/light_seekBar"
+            android:id="@+id/hope_light_seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -240,6 +250,7 @@
             android:progressDrawable="@drawable/seekbardesign"
             android:thumb="@drawable/seekbarthumb" />
     </LinearLayout>
+
 
     <!--블라인드-->
     <LinearLayout
@@ -252,13 +263,14 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-            android:src="@drawable/blind" />
+            android:src="@drawable/blind"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -268,23 +280,27 @@
             android:text="블라인드"
             android:textSize="7pt" />
 
-        <Button
-            android:id="@+id/blindOPEN"
-            android:layout_width="70dp"
+        <ToggleButton
+            android:id="@+id/blindHopeOPEN"
+            android:layout_width="50dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="15dp"
-            android:background="@color/colorBeige"
-            android:text="OPEN" />
+            android:background="@drawable/button_selector"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textOff="OPEN"
+            android:textOn="OPEN" />
+        <ToggleButton
+            android:id="@+id/blindHopeCLOSE"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_selector"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textOff="CLOSE"
+            android:textOn="CLOSE" />
 
-        <Button
-            android:id="@+id/blindCLOSE"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/colorBeige"
-            android:text="CLOSE" />
     </LinearLayout>
 
 <!--알람상태확인-->
@@ -299,12 +315,12 @@
         android:padding="10dp">
         <ToggleButton
             android:id="@+id/alarmOnOff"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/alarm_selector"
+            android:layout_marginRight="10dp"
             android:textOff=""
             android:textOn="" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -314,26 +330,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="알람상태:" />
-
                 <TextView
                     android:id="@+id/alarmState"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="On" />
-            </LinearLayout>
-
+                    android:text="ID:alarmState " />
             <TextView
                 android:id="@+id/alarmTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="06:30" />
-
-
+                android:text="\t\tID:alarmTime" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/alarmDates"
