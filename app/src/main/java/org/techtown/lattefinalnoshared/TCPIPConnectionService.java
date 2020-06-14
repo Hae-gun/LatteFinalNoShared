@@ -47,8 +47,8 @@ public class TCPIPConnectionService extends Service {
     private Gson gson = MainActivity.gson;
 
 
-      private static final String HOST = "70.12.60.97";
-    //private static final String HOST = "192.168.35.103";
+//      private static final String HOST = "70.12.60.97";
+    private static final String HOST = "192.168.35.103";
 
     private static final int PORT = 55566;
     private static String MACAddress = "";
@@ -138,6 +138,9 @@ public class TCPIPConnectionService extends Service {
                     send(message);
                 }else if(intent.getStringExtra("getAlarm")!=null){
                     String message = intent.getStringExtra("getAlarm");
+                    send(message);
+                }else if(intent.getStringExtra("Control")!=null){
+                    String message = intent.getStringExtra("Control");
                     send(message);
                 }
 
@@ -269,7 +272,7 @@ public class TCPIPConnectionService extends Service {
                                     try {
                                         LatteMessage msg = gson.fromJson(line, LatteMessage.class);
                                         String code1 = msg.getCode1();
-                                        String code2 = msg.getCode2();
+                                        String code2 = msg.getCode2().toUpperCase();
 
                                         if ("LOGIN".equals(code1)) {
                                             Guest guest = gson.fromJson(msg.getJsonData(),Guest.class);
@@ -280,6 +283,7 @@ public class TCPIPConnectionService extends Service {
                                             // 2020-06-13 17:38 유저정보 화면에 표시......
                                             //
                                             //
+
                                             //
                                             //
                                             //
@@ -294,6 +298,11 @@ public class TCPIPConnectionService extends Service {
                                                 Intent i = new Intent("fromService");
                                                 i.putExtra("LoginPermission", "cannotLogin");
                                                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+                                            }
+                                        }else if("RoomDetail".equals(code1)){
+                                            if("SUCCESS".equals(code2)){
+                                                Log.i("inRoomCurrentSetting","inService"+line);
+                                                makeIntent("currentRoomSetting", "Setting", line);
                                             }
                                         }
                                     } catch (Exception e) {

@@ -176,12 +176,13 @@ public class AlarmSetting extends Fragment {
                     Log.i("inFragment","inFragment: "+data);
                     LatteMessage lmsg = gson.fromJson(data,LatteMessage.class);
                     AlarmData[] alarmDatas= gson.fromJson(lmsg.getJsonData(),AlarmData[].class);
-
+                    Log.i("request",gson.toJson(alarmDatas));
                     for(AlarmData aData : alarmDatas){
-                        if(aData.getType().equals("Light")&&aData.getStates().equals("On")){
+                        if("Light".equals(aData.getType())&&"On".equals(aData.getStates())){
+
                             int power = Integer.valueOf(aData.getStateDetail());
                             hope_light_seekBar.setProgress(power,true);
-                        }else if(aData.getType().equals("Bed")){
+                        }else if("Bed".equals(aData.getType())){
                             String value = aData.getStates();
                             for(ToggleButton bed : bedButtonSets.values()){
                                 if(bedButtonSets.get(value).equals(bed)){
@@ -191,7 +192,7 @@ public class AlarmSetting extends Fragment {
                                 }
                             }
 //                            bedButtonSets.get(value).setChecked(true);
-                        }else if(aData.getType().equals("Blind")){
+                        }else if("Blind".equals(aData.getType())){
                             String value = aData.getStates();
                             for(ToggleButton blind : blindButtonSets.values()){
                                 if(blindButtonSets.get(value).equals(blind)){

@@ -65,6 +65,7 @@
                 android:text="ID:sensorThermo" />
 
             <TextView
+                android:paddingLeft="30dp"
                 android:id="@+id/sensorAircon_heater"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -233,11 +234,12 @@
                 android:layout_marginTop="9dp"
                 android:text="조명"
                 android:textSize="7pt" />
+
             <TextView
                 android:id="@+id/lightPower"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:text="ID:lightpower"/>
+                android:text="ID:lightpower" />
         </LinearLayout>
         <SeekBar
             android:id="@+id/hope_light_seekBar"

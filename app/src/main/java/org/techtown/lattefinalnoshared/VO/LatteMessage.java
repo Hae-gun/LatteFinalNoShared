@@ -7,16 +7,33 @@ import org.techtown.lattefinalnoshared.MainActivity;
 public class LatteMessage {
 
     private String clientNo;
+    private String roomNo;
     private String code1;
     private String code2;
     private String jsonData;
 
+    public LatteMessage() {
+    }
+
+    public LatteMessage(String code1, String code2, String jsonData) {
+        this.code1 = code1;
+        this.code2 = code2;
+        this.jsonData = jsonData;
+    }
 
     public LatteMessage(String clientNo, String code1, String code2, String jsonData) {
         this.clientNo = clientNo;
         this.code1 = code1;
         this.code2 = code2;
         this.jsonData = jsonData;
+    }
+
+    public String getRoomNo() {
+        return roomNo;
+    }
+
+    public void setRoomNo(String roomNo) {
+        this.roomNo = roomNo;
     }
 
     public String getClientNo() {
