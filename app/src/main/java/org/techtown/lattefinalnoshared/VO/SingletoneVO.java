@@ -1,13 +1,13 @@
 package org.techtown.lattefinalnoshared.VO;
 
 public class SingletoneVO {
-    private String Macaddress;
-    private String id;
-    private String pw;
-    private String userNo;
-    private String roomNo;
-    private String role;
-    private boolean authority;
+    private String Macaddress="";
+    private String id="";
+    private String pw="";
+    private String userNo="";
+    private String roomNo="";
+    private String role="";
+    private boolean authority=true;
     private Alarm alarm;
 
     public static SingletoneVO vo = new SingletoneVO();

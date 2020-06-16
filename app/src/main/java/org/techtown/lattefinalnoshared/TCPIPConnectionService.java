@@ -49,10 +49,10 @@ public class TCPIPConnectionService extends Service {
 
 
 //      private static final String HOST = "70.12.60.97";
-      private static final String HOST = "70.12.60.99";
-//    private static final String HOST = "192.168.35.103";
+//      private static final String HOST = "70.12.60.99";
+    private static final String HOST = "192.168.35.103";
 
-    private static final int PORT = 55566;
+    private static final int PORT = 55577;
     private static String MACAddress = "";
     private static final String CHANNEL_ID = "ForeGroundServiceChannel";
     private Socket socket;
@@ -321,13 +321,12 @@ public class TCPIPConnectionService extends Service {
                                             Log.i("inRoomCurrentSetting","inService"+line);
                                             makeIntent("roomListSetting", "Setting", line);
                                         }else if("UPDATE".equals(code1)){
+                                            makeIntent("currentRoomSetting", "Setting", line);
                                             if("blind".equals(code2)){
-                                                makeIntent("roomListSetting", "Setting", line);
+                                                makeIntent("currentRoomSetting", "Setting", line);
                                             }
                                         }else if("CONTROL".equals(code1)){
-                                            if("blind".equals(code2)){
-                                                makeIntent("roomListSetting", "Setting", line);
-                                            }
+                                                makeIntent("currentRoomSetting", "Setting", line);
                                         }
 
                                     } catch (Exception e) {

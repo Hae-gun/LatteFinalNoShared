@@ -65,11 +65,17 @@
                 android:text="ID:sensorThermo" />
 
             <TextView
-                android:paddingLeft="30dp"
-                android:id="@+id/sensorAircon_heater"
+                android:paddingLeft="15dp"
+                android:id="@+id/sensorAircon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ID:sensorAircon_heater" />
+                android:text="-" />
+            <TextView
+                android:paddingLeft="15dp"
+                android:id="@+id/sensorHeater"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-" />
         </LinearLayout>
 
 

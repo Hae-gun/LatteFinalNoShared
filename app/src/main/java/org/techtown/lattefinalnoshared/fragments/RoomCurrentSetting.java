@@ -47,7 +47,8 @@ public class RoomCurrentSetting extends Fragment {
     // TextView Component
     private TextView userID;
     private TextView sensorThermo;
-    private TextView sensorAircon_heater;
+    private TextView sensorAircon;
+    private TextView sensorHeater;
     private TextView sensorHumid;
     private TextView sensorLight;
     private TextView sensorBlind;
@@ -132,31 +133,35 @@ public class RoomCurrentSetting extends Fragment {
         views = new HashMap<>();
 
         userID = rootView.findViewById(R.id.userID);
-        String[] viewName = {"TEMP", "COOL", "HUMI", "LIGHT", "BLIND", "DOOR"}; //HEAT 추가
+        String[] viewName = {"TEMP", "COOL","HEAT", "HUMI", "LIGHT", "BLIND", "DOOR"}; //HEAT 추가
         componentMap.put("userID", userID);
 
         sensorThermo = rootView.findViewById(R.id.sensorThermo);
         views.put(viewName[0], sensorThermo);
         componentMap.put("sensorThermo", sensorThermo);
 
-        sensorAircon_heater = rootView.findViewById(R.id.sensorAircon_heater);
-        views.put(viewName[1], sensorAircon_heater);
-        componentMap.put("sensorAircon_heater", sensorAircon_heater);
+        sensorAircon = rootView.findViewById(R.id.sensorAircon);
+        views.put(viewName[1], sensorAircon);
+        componentMap.put("sensorAircon", sensorAircon);
+
+        sensorHeater = rootView.findViewById(R.id.sensorHeater);
+        views.put(viewName[2], sensorHeater);
+        componentMap.put("sensorHeater", sensorHeater);
 
         sensorHumid = rootView.findViewById(R.id.sensorHumid);
-        views.put(viewName[2], sensorHumid);
+        views.put(viewName[3], sensorHumid);
         componentMap.put("sensorHumid", sensorHumid);
 
         sensorLight = rootView.findViewById(R.id.sensorLight);
-        views.put(viewName[3], sensorLight);
+        views.put(viewName[4], sensorLight);
         componentMap.put("lightPower", sensorLight);
 
         sensorBlind = rootView.findViewById(R.id.sensorBlind);
-        views.put(viewName[4], sensorBlind);
+        views.put(viewName[5], sensorBlind);
         componentMap.put("blindState", sensorBlind);
 
         sensorDoor = rootView.findViewById(R.id.sensorDoor);
-        views.put(viewName[5], sensorDoor);
+        views.put(viewName[6], sensorDoor);
         componentMap.put("sensorDoor", sensorDoor);
 
         exitModeTextView = rootView.findViewById(R.id.exitModeTextView);
@@ -197,7 +202,8 @@ public class RoomCurrentSetting extends Fragment {
 
                 Log.i("BBBBBB", vo.getId());
 //                if(getStringFromIntent(data,intent, "Setting")) {
-                if ((data = intent.getStringExtra("Setting")) != null) {
+                if (intent.getStringExtra("Setting") != null) {
+                    data = intent.getStringExtra("Setting");
                     // 초기 값 셋팅.
                     Log.i("SettingFrag", data);
                     LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
@@ -286,10 +292,39 @@ public class RoomCurrentSetting extends Fragment {
                         userID.setText(vo.getId());
                         roomName.setText(roomDetail.getRoomNo());
                         Log.i("inRoomCurrentSetting", "inFragCurrent: " + data);
-                    } else if ("Update".equals(lmsg.getCode1())) {
-                        SensorData sensorData = gson.fromJson(lmsg.getJsonData(), SensorData.class);
+                    } else if ("Update".equals(code1)) {
                         Log.i("Update", data);
-                        sensorBlind.setText(sensorData.getStates());
+                        SensorData sensorData = gson.fromJson(lmsg.getJsonData(), SensorData.class);
+                        String states = sensorData.getStates();
+                        if("TEMP".equals(code2)){
+                            Log.i("Update", states);
+                            sensorThermo.setText(states);
+                        }
+//                        else if("HUMI".equals(code2)){
+//
+//                        }
+
+
+//                        sensorBlind.setText(sensorData.getStates());
+                    }else if("CONTROL".equals(code1)||"Control".equals(code1)){
+                        SensorData sensorData = gson.fromJson(lmsg.getJsonData(),SensorData.class);
+                        String states = sensorData.getStates();
+                        String statesDetail="";
+                        if(sensorData.getStateDetail()!=null){
+                            statesDetail = sensorData.getStateDetail();
+                        }
+                        if("COOL".equals(code2)){
+                            sensorAircon.setText("COOL: "+states);
+                        }else if("HEAT".equals(code2)){
+                            sensorHeater.setText("HEAT: "+states);
+                        }else if("DOOR".equals(code2)){
+                            sensorDoor.setText(states);
+                        }else if("BLIND".equals(code2)){
+                            sensorBlind.setText(states);
+                        }else if("TEMP".equals(code2)){
+                            Log.i("data","why?");
+                            sensorThermo.setText(states+"-");
+                        }
                     }
                 }
 //                if ((data = getStringFromIntent(intent, "current")) != null) {
