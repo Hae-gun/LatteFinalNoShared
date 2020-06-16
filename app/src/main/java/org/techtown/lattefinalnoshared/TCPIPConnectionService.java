@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -48,9 +49,10 @@ public class TCPIPConnectionService extends Service {
 
 
 //      private static final String HOST = "70.12.60.97";
-    private static final String HOST = "192.168.35.103";
+      private static final String HOST = "70.12.60.99";
+//    private static final String HOST = "192.168.35.103";
 
-    private static final int PORT = 55566;
+    private static final int PORT = 55577;
     private static String MACAddress = "";
     private static final String CHANNEL_ID = "ForeGroundServiceChannel";
     private Socket socket;
@@ -98,7 +100,7 @@ public class TCPIPConnectionService extends Service {
                     send(request);
                 } else if (intent.getStringExtra("current") != null) {
                     String current = intent.getStringExtra("current");
-                    send(current);
+//                    send(current);
                 } else if (intent.getStringExtra("guestVO") != null) {
                     String jsonString = intent.getStringExtra("guestVO");
                     Guest guest = gson.fromJson(jsonString, Guest.class);
@@ -141,6 +143,12 @@ public class TCPIPConnectionService extends Service {
                     send(message);
                 }else if(intent.getStringExtra("Control")!=null){
                     String message = intent.getStringExtra("Control");
+                    send(message);
+                }else if(intent.getStringExtra("alarmUpdate")!=null){
+                    String message = intent.getStringExtra("alarmUpdate");
+                    send(message);
+                }else if(intent.getStringExtra("blindSet")!=null){
+                    String message = intent.getStringExtra("blindSet");
                     send(message);
                 }
 
@@ -258,11 +266,12 @@ public class TCPIPConnectionService extends Service {
                             executor.submit(getAddr);
                             Log.i("fser", "Point 8");
                             while (socket.isConnected() && !socket.isClosed()) {
+                                Log.i("connection","doReadLine");
                                 try {
                                     String line = "";
                                     line = input.readLine();
                                     Log.i("fromServer", line);
-
+//                                    Toast.makeText(TCPIPConnectionService.this, line, Toast.LENGTH_SHORT).show();
 
                                     // 서버에서 받은 Message 객체분해.
 //                                      Intent i = new Intent("fromService");
@@ -276,10 +285,13 @@ public class TCPIPConnectionService extends Service {
 
                                         if ("LOGIN".equals(code1)) {
                                             Guest guest = gson.fromJson(msg.getJsonData(),Guest.class);
-
-                                            singletoneVO.setUserNo(guest.getUserNo());
-                                            singletoneVO.setId(guest.getLoginID());
-                                            singletoneVO.setRole(guest.getRole());
+//                                            Log.i("LOGIN","1111111111");
+                                            if("SUCCESS".equals(code2)){
+                                                singletoneVO.setUserNo(guest.getUserNo());
+                                                singletoneVO.setId(guest.getLoginID());
+                                                singletoneVO.setRole(guest.getRole());
+                                            }
+//                                            Log.i("LOGIN","2222222222");
                                             // 2020-06-13 17:38 유저정보 화면에 표시......
                                             //
                                             //
@@ -290,21 +302,34 @@ public class TCPIPConnectionService extends Service {
                                             msg.setJsonData(gson.toJson(guest));
 
 
-                                            if ("SUCCESS".equals(code2)) {
+//                                            if ("SUCCESS".equals(code2)) {
                                                 Intent i = new Intent("fromService");
                                                 i.putExtra("LoginPermission", gson.toJson(msg));
                                                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-                                            }else {
-                                                Intent i = new Intent("fromService");
-                                                i.putExtra("LoginPermission", "cannotLogin");
-                                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-                                            }
-                                        }else if("RoomDetail".equals(code1)){
+//                                            }else if("FAIL".equals(code2)){
+//                                                Intent i = new Intent("fromService");
+//                                                i.putExtra("LoginPermission", gson.toJson(msg));
+//                                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+//                                            }
+                                        }else if("ROOMDETAIL".equals(code1)){
                                             if("SUCCESS".equals(code2)){
                                                 Log.i("inRoomCurrentSetting","inService"+line);
                                                 makeIntent("currentRoomSetting", "Setting", line);
                                             }
+                                        }else if("RESERVELIST".equals(code1)&&code2!=null){
+
+                                            Log.i("inRoomCurrentSetting","inService"+line);
+                                            makeIntent("roomListSetting", "Setting", line);
+                                        }else if("UPDATE".equals(code1)){
+                                            if("blind".equals(code2)){
+                                                makeIntent("roomListSetting", "Setting", line);
+                                            }
+                                        }else if("CONTROL".equals(code1)){
+                                            if("blind".equals(code2)){
+                                                makeIntent("roomListSetting", "Setting", line);
+                                            }
                                         }
+
                                     } catch (Exception e) {
                                         Log.i("error", e.toString());
                                     }
@@ -359,13 +384,13 @@ public class TCPIPConnectionService extends Service {
                                     Log.i("connect/TCP", "Service - Runnable accept() : " + e);
                                     close();
                                 }
-//                                Log.i("connection","connecting1");
+                                Log.i("connection","connecting1");
                             }
-//                            Log.i("connection","connecting2");
+                            Log.i("connection","connecting2");
                         }
-//                        Log.i("connection","connecting3");
+                        Log.i("connection","connecting3");
                     }
-//                    Log.i("connection","connecting4");
+                    Log.i("connection","connecting4");
                     notifyAll();
                 } while (keepConn);
                 stop();
@@ -404,8 +429,11 @@ public class TCPIPConnectionService extends Service {
 
     private boolean close() {
         try {
-            if (socket != null && socket.isClosed()) {
+            Log.i("TCP/IP", "Service - close() : start");
+            if (socket != null && !socket.isClosed()) {
                 socket.close();
+
+                Log.i("TCP/IP", "Service - close() :" + socket.isClosed());
                 if (input != null) input.close();
                 if (output != null) output.close();
                 if (input != null) {

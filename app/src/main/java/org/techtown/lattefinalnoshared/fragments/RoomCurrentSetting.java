@@ -35,6 +35,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,13 +83,14 @@ public class RoomCurrentSetting extends Fragment {
     //    private Map<View,Integer> componentSet = new HashMap<View,Integer>();
     private String blindState = "";
     private HashMap<String, TextView> views;
+    private HashMap<String, String> sensorTypeID;
 
-
-    private String alarmHour="";
-    private String alarmMin="";
+    private String alarmHour = "";
+    private String alarmMin = "";
 
     private SensorData light;
     private int prevPower = 0;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -130,7 +132,7 @@ public class RoomCurrentSetting extends Fragment {
         views = new HashMap<>();
 
         userID = rootView.findViewById(R.id.userID);
-        String[] viewName = {"thermo", "aircon", "humid", "light", "blind", "door"};
+        String[] viewName = {"TEMP", "COOL", "HUMI", "LIGHT", "BLIND", "DOOR"}; //HEAT 추가
         componentMap.put("userID", userID);
 
         sensorThermo = rootView.findViewById(R.id.sensorThermo);
@@ -172,9 +174,9 @@ public class RoomCurrentSetting extends Fragment {
         alarmOnOff = rootView.findViewById(R.id.alarmOnOff);
 
         // Alarm TextView
-        alarmState= rootView.findViewById(R.id.alarmState);
-        alarmTime= rootView.findViewById(R.id.alarmTime);
-        alarmDates= rootView.findViewById(R.id.alarmDates);
+        alarmState = rootView.findViewById(R.id.alarmState);
+        alarmTime = rootView.findViewById(R.id.alarmTime);
+        alarmDates = rootView.findViewById(R.id.alarmDates);
 
 
         // SeekBar Component
@@ -187,8 +189,6 @@ public class RoomCurrentSetting extends Fragment {
         blindCLOSE = rootView.findViewById(R.id.blindHopeCLOSE);
 
 
-
-
         //  서버에서 받아오는 값 컴포넌트에 지정하는 Broadcast Receiver.
         currentBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -199,75 +199,98 @@ public class RoomCurrentSetting extends Fragment {
 //                if(getStringFromIntent(data,intent, "Setting")) {
                 if ((data = intent.getStringExtra("Setting")) != null) {
                     // 초기 값 셋팅.
+                    Log.i("SettingFrag", data);
                     LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
-                    RoomDetail roomDetail = gson.fromJson(lmsg.getJsonData(), RoomDetail.class);
-                    Hope hope = roomDetail.getHope();
-                    Alarm alarm = roomDetail.getAlarm();
 
-                    alarmHour = alarm.getHour();
-                    alarmMin = alarm.getMin();
+                    String code1 = lmsg.getCode1();
+                    String code2 = lmsg.getCode2();
 
-                    thermo_sbValue.setText(hope.getTemp()+"ºC");
-                    thermo_seekBar.setProgress(Integer.valueOf(hope.getTemp()));
+                    if ("RoomDetail".toUpperCase().equals(code1) && "SUCCESS".equals(code2)) {
+                        RoomDetail roomDetail = gson.fromJson(lmsg.getJsonData(), RoomDetail.class);
+                        Hope hope = roomDetail.getHope();
+                        Alarm alarm = roomDetail.getAlarm();
+                        vo.setAlarm(alarm);
+                        alarmHour = alarm.getHour();
+                        alarmMin = alarm.getMin();
 
-                    lightPower.setText(hope.getLight() + "%");
+                        thermo_sbValue.setText(hope.getTemp() + "ºC");
+                        thermo_seekBar.setProgress(Integer.valueOf(hope.getTemp()));
+
+                        lightPower.setText(hope.getLight() + "%");
 //                    hope_light_seekBar.setProgress(Integer.valueOf(hope.getLight()));
 
+                        LinkedList<String> sensorNoSet = new LinkedList<>();
+                        LinkedList<String> sensorTypeSet = new LinkedList<>();
+                        sensorTypeID = new HashMap<>();
 
-                    List<Sensor> sensors = roomDetail.getSensorList();
-                    for (Sensor sensor : sensors) {
-                        String type = sensor.getType();
-                        String states = sensor.getStates();
-                        TextView textView = views.get(type);
-                        if (sensor.getStateDetail() != null) {
-                            String value = sensor.getStateDetail();
-                            textView.setText(value + "%");
 
-                            if ("On".equals(states)) {
-                                lightOnOff.setChecked(true);
-                                lightPower.setText(value + "%");
-                                hope_light_seekBar.setProgress(Integer.valueOf(value));
+                        List<Sensor> sensors = roomDetail.getSensorList();
+                        for (Sensor sensor : sensors) {
+                            sensorTypeID.put(sensor.getType(), sensor.getSensorNo());
+//                            sensorNoSet.addLast(sensor.getSensorNo());
+//                            sensorTypeSet.addLast(sensor.getType());
+
+
+                            String type = sensor.getType();
+                            String states = sensor.getStates();
+                            TextView textView = views.get(type);
+                            if ("LIGHT".equals(type)) {
+                                String value = sensor.getStateDetail();
+                                textView.setText(value + "%");
+
+                                if ("on".equals(states)) {
+                                    lightOnOff.setChecked(true);
+                                    lightPower.setText(value + "%");
+                                    hope_light_seekBar.setProgress(Integer.valueOf(value));
+                                } else {
+                                    lightOnOff.setChecked(false);
+                                    hope_light_seekBar.setProgress(0);
+                                }
                             } else {
-                                lightOnOff.setChecked(false);
-                                hope_light_seekBar.setProgress(0);
-                            }
-                        } else {
-                            if ("aircon".equals(type) || "heater".equals(type)) {
-                                textView.setText(type + ": " + states);
-                            } else if("thermo".equals(type)){
-                                textView.setText(states+"ºC");
-                            }else if("humid".equals(type)){
-                                textView.setText(states+"%");
-                            }else {
-                                textView.setText(states);
+                                if ("cool".toUpperCase().equals(type)) {// || "heat".toUpperCase().equals(type)
+                                    textView.setText(type + ": " + states);
+                                } else if ("temp".toUpperCase().equals(type)) {
 
-                                if ("blind".equals(type)) {
-
-                                    if ("On".equals(states)) {
+                                    textView.setText(states + "ºC");
+                                } else if ("humi".toUpperCase().equals(type)) {
+                                    textView.setText(states + "%");
+                                } else if ("blind".toUpperCase().equals(type)) {
+                                    if ("1".toUpperCase().equals(states)) {
+                                        textView.setText("OPEN");
                                         blindOPEN.setChecked(true);
                                         blindCLOSE.setChecked(false);
                                     } else {
+                                        textView.setText("CLOSE");
                                         blindOPEN.setChecked(false);
                                         blindCLOSE.setChecked(true);
                                     }
-
-
                                 }
                             }
                         }
-                    }
-                    // 알람 초기값 셋팅.
-                    if(alarm.isFlag()){
-                    alarmState.setText("On");}else{
-                        alarmState.setText("Off");
-                    }
-                    alarmTime.setText(alarm.getHour() + ":" + alarm.getMin());
-                    alarmDates.setText(alarm.getWeeks());
-                    alarmOnOff.setChecked(alarm.isFlag());
 
-                    userID.setText(vo.getId());
-                    roomName.setText(roomDetail.getRoomNo());
-                    Log.i("inRoomCurrentSetting", "inFragCurrent: " + data);
+                        Log.i("sensorListSet", sensorNoSet.toString());
+                        Log.i("sensorListSet", sensorTypeSet.toString());
+                        // 알람 초기값 셋팅.
+                        boolean flag = true;
+                        if ("Y".equals(alarm.getFlag())) {
+                            alarmState.setText("On".toUpperCase());
+                            flag = true;
+                        } else if ("N".equals(alarm.getFlag())) {
+                            alarmState.setText("Off".toUpperCase());
+                            flag = false;
+                        }
+                        alarmTime.setText(alarm.getHour() + ":" + alarm.getMin());
+                        alarmDates.setText(alarm.getWeeks());
+                        alarmOnOff.setChecked(flag);
+
+                        userID.setText(vo.getId());
+                        roomName.setText(roomDetail.getRoomNo());
+                        Log.i("inRoomCurrentSetting", "inFragCurrent: " + data);
+                    } else if ("Update".equals(lmsg.getCode1())) {
+                        SensorData sensorData = gson.fromJson(lmsg.getJsonData(), SensorData.class);
+                        Log.i("Update", data);
+                        sensorBlind.setText(sensorData.getStates());
+                    }
                 }
 //                if ((data = getStringFromIntent(intent, "current")) != null) {
 //                if(getStringFromIntent(data,intent, "current")){
@@ -292,6 +315,7 @@ public class RoomCurrentSetting extends Fragment {
 
         thermo_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 thermo_sbValue.setText(progress + "°C");
@@ -313,13 +337,25 @@ public class RoomCurrentSetting extends Fragment {
 //                Date time = (Date) new java.util.Date();
 //                sensorData.setTime(Date.valueOf(sendTime));
                 Date date = new Date(System.currentTimeMillis());
-                sensorData.setTime(date);
-                sensorData.setStates(""+progress);
+                try {
+                    sensorData.setTime(date);
+                    sensorData.setStates("" + progress);
+                    sensorData.setSensorNo(sensorTypeID.get("TEMP"));
 
-                String jsonData = gson.toJson(sensorData);
-                LatteMessage lmsg =  new LatteMessage("Control","thermo",jsonData);
-                lmsg.setRoomNo(vo.getRoomNo());
-                sendToService("toService", "Control", gson.toJson(lmsg));
+                    String jsonData = gson.toJson(sensorData);
+                    LatteMessage lmsg = new LatteMessage("Control", "TEMP", jsonData);
+                    lmsg.setRoomNo(vo.getRoomNo());
+                    sendToService("toService", "Control", gson.toJson(lmsg));
+                } catch (Exception e) {
+                    sensorData.setTime(date);
+                    sensorData.setStates("" + progress);
+                    sensorData.setSensorNo("SN01101");
+
+                    String jsonData = gson.toJson(sensorData);
+                    LatteMessage lmsg = new LatteMessage("Control", "TEMP", jsonData);
+                    lmsg.setRoomNo("11111111");
+                    sendToService("toService", "Control", gson.toJson(lmsg));
+                }
             }
         });
 
@@ -329,7 +365,7 @@ public class RoomCurrentSetting extends Fragment {
 
 
 //                sendToService("toService", "Control", "" + progress);
-                lightPower.setText(progress+"%");
+                lightPower.setText(progress + "%");
                 SensorData sensorData = new SensorData();
 
                 light = sensorData;
@@ -340,17 +376,18 @@ public class RoomCurrentSetting extends Fragment {
 //                sensorData.setTime(Date.valueOf(sendTime));
                 Date date = new Date(System.currentTimeMillis());
                 sensorData.setTime(date);
-                if(progress!=0){
+                if (progress != 0) {
                     sensorData.setStates("On");
                     lightOnOff.setChecked(true);
-                }else{
+                } else {
                     sensorData.setStates("Off");
                     lightOnOff.setChecked(false);
                 }
-                sensorData.setStateDetail(""+progress);
+                sensorData.setStateDetail("" + progress);
+                sensorData.setSensorNo(sensorTypeID.get("LIGHT"));
                 String jsonData = gson.toJson(sensorData);
-                LatteMessage lmsg =  new LatteMessage("Control","light",jsonData);
-                lmsg.setRoomNo(vo.getRoomNo());
+                LatteMessage lmsg = new LatteMessage("Control", "light", jsonData);
+                lmsg.setClientNo(vo.getRoomNo());
                 sendToService("toService", "Control", gson.toJson(lmsg));
 //                sendToService("toService", "light_seekBar", "" + progress);
 
@@ -363,7 +400,7 @@ public class RoomCurrentSetting extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(hope_light_seekBar.getProgress()!=0) {
+                if (hope_light_seekBar.getProgress() != 0) {
                     prevPower = hope_light_seekBar.getProgress();
                 }
             }
@@ -380,31 +417,53 @@ public class RoomCurrentSetting extends Fragment {
 
 //        sendEvent(lightOnOff, "onOffState", "" + lightOnOff.isChecked());
         lightOnOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(lightOnOff.isChecked()){
+            public String sendData() {
+                if (lightOnOff.isChecked()) {
                     light.setStates("On");
-                    lightPower.setText(light.getStateDetail()+"%");
+                    lightPower.setText(light.getStateDetail() + "%");
                     hope_light_seekBar.setProgress(prevPower);
-                    String jsonData = gson.toJson(light);
-                    LatteMessage lmsg =  new LatteMessage("Control","light",jsonData);
-                    lmsg.setRoomNo(vo.getRoomNo());
-                    sendToService("toService", "Control", gson.toJson(lmsg));
-                }else{
+                } else {
                     light.setStates("Off");
-                    prevPower = hope_light_seekBar.getProgress();
                     lightPower.setText("0%");
                     hope_light_seekBar.setProgress(0);
-                    String jsonData = gson.toJson(light);
-                    LatteMessage lmsg =  new LatteMessage("Control","light",jsonData);
-                    lmsg.setRoomNo(vo.getRoomNo());
-                    sendToService("toService", "Control", gson.toJson(lmsg));
                 }
+                Date date = new Date(System.currentTimeMillis());
+                light.setTime(date);
+                light.setSensorNo(sensorTypeID.get("LIGHT"));
+                String jsonData = gson.toJson(light);
+                LatteMessage lmsg = new LatteMessage("Control", "light", jsonData);
+
+                return gson.toJson(lmsg);
+            }
+
+            @Override
+            public void onClick(View v) {
+//                if (lightOnOff.isChecked()) {
+//                    light.setStates("On");
+//                    lightPower.setText(light.getStateDetail() + "%");
+//                    hope_light_seekBar.setProgress(prevPower);
+//                    Date date = new Date(System.currentTimeMillis());
+//                    light.setTime(date);
+//                    String jsonData = gson.toJson(light);
+//                    LatteMessage lmsg = new LatteMessage("Control", "light", jsonData);
+//                    lmsg.setClientNo(vo.getRoomNo());
+                sendToService("toService", "Control", gson.toJson(sendData()));
+//                } else {
+//                    light.setStates("Off");
+//                    prevPower = hope_light_seekBar.getProgress();
+//                    lightPower.setText("0%");
+//                    hope_light_seekBar.setProgress(0);
+//                    Date date = new Date(System.currentTimeMillis());
+//                    light.setTime(date);
+//                    String jsonData = gson.toJson(light);
+//                    LatteMessage lmsg = new LatteMessage("Control", "light", jsonData);
+//                    lmsg.setClientNo(vo.getRoomNo());
+//                    sendToService("toService", "Control", gson.toJson(lmsg));
             }
         });
 
         // 알람 On/Off 서버로 전송
-        sendEvent(alarmOnOff, "onOffState", "" + alarmOnOff.isChecked());
+//        sendEvent(alarmOnOff, "onOffState", "" + alarmOnOff.isChecked());
 //        alarmOnOff.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -420,7 +479,16 @@ public class RoomCurrentSetting extends Fragment {
             public void onClick(View v) {
                 blindCLOSE.setChecked(false);
 
-                sendToService("toService", "blindState", "OPEN");
+                SensorData sensorData = new SensorData();
+                Date date = new Date(System.currentTimeMillis());
+                sensorData.setTime(date);
+                sensorData.setDataNo(vo.getRoomNo());
+                sensorData.setStates("OPEN");
+                sensorData.setSensorNo(sensorTypeID.get("BLIND"));
+                LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "Control", "blind", gson.toJson(sensorData));
+//                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+                sendToService("toService", "blindSet", gson.toJson(lmsg));
+//                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
             }
         });
 
@@ -428,10 +496,40 @@ public class RoomCurrentSetting extends Fragment {
             @Override
             public void onClick(View v) {
                 blindOPEN.setChecked(false);
-                sendToService("toService", "blindState", "CLOSE");
+                SensorData sensorData = new SensorData();
+                Date date = new Date(System.currentTimeMillis());
+                sensorData.setTime(date);
+                sensorData.setDataNo(vo.getRoomNo());
+                sensorData.setStates("CLOSE");
+                sensorData.setSensorNo(sensorTypeID.get("BLIND"));
+                LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "Control", "blind", gson.toJson(sensorData));
+                sendToService("toService", "blindSet", gson.toJson(lmsg));
             }
         });
+        alarmOnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                LatteMessage lmsg = new LatteMessage();
+                lmsg.setClientNo(vo.getUserNo());
+                lmsg.setCode1("Alarm");
+                lmsg.setCode2("Update");
+
+                Alarm alarm = vo.getAlarm();
+
+                if (alarmOnOff.isChecked()) {
+//                    alarm.setFlag(true);
+                    alarm.setFlag("Y");
+                } else {
+                    alarm.setFlag("N");
+//                    alarm.setFlag(false);
+                }
+                Log.i("setAlarm", alarm.toString());
+                lmsg.setJsonData(gson.toJson(alarm));
+
+                sendToService("toService", "alarmUpdate", gson.toJson(lmsg));
+            }
+        });
 //        blindHopeOPEN.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -447,22 +545,25 @@ public class RoomCurrentSetting extends Fragment {
 //            }
 //        });
 
-        if (vo.getAuthority()) {
-            thermo_seekBar.setEnabled(true);
-            hope_light_seekBar.setEnabled(true);
-            blindOPEN.setEnabled(true);
-            blindCLOSE.setEnabled(true);
-        } else {
-            thermo_seekBar.setEnabled(false);
-            hope_light_seekBar.setEnabled(false);
-            blindOPEN.setEnabled(false);
-            blindCLOSE.setEnabled(false);
-        }
+//        if (vo.getAuthority()) {
+//            thermo_seekBar.setEnabled(true);
+//            hope_light_seekBar.setEnabled(true);
+//            blindOPEN.setEnabled(true);
+//            blindCLOSE.setEnabled(true);
+//            lightOnOff.setEnabled(true);
+//        } else {
+//            thermo_seekBar.setEnabled(false);
+//            hope_light_seekBar.setEnabled(false);
+//            blindOPEN.setEnabled(false);
+//            blindCLOSE.setEnabled(false);
+//            lightOnOff.setEnabled(false);
+//        }
 
         // 초기셋팅 위한 요청 메세지 작성
 
         Room room = new Room();
-        vo.setRoomNo("R000123");
+//        vo.setRoomNo("R000123");
+//        vo.setRoomNo();
         //여기서 날짜 비교해서 룸객체 보내기.
 
         room.setRoomNo(vo.getRoomNo());

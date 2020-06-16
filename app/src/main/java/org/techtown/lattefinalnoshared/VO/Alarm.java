@@ -6,7 +6,8 @@ public class Alarm {
 	private String 	hour;
 	private String 	min;
 	private String 	weeks;
-	private boolean flag;
+//	private boolean flag;
+	private String flag;
 
 	public String getUserNo() {
 		return userNo;
@@ -48,11 +49,20 @@ public class Alarm {
 		this.weeks = weeks;
 	}
 	
-	public boolean isFlag() {
+//	public boolean isFlag() {
+//		return flag;
+//	}
+//
+//	public void setFlag(boolean flag) {
+//		this.flag = flag;
+//	}
+
+
+	public String getFlag() {
 		return flag;
 	}
-	
-	public void setFlag(boolean flag) {
+
+	public void setFlag(String flag) {
 		this.flag = flag;
 	}
 

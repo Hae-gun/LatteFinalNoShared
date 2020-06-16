@@ -53,7 +53,7 @@ public class AlarmSetting extends Fragment {
     private Gson gson = new Gson();
     //    private HashMap<String,ToggleButton> toggleButtonHashMap = new HashMap<>();
     private HashMap<ToggleButton, String> toggleButtonHashMap;
-
+    private HashMap<String, ToggleButton> setButtonHashMap;
     private String lightPower = "";
     private String bedDegree = "";
     private String blindState = "";
@@ -64,32 +64,48 @@ public class AlarmSetting extends Fragment {
     };
     private String[] weeksString = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
 
-    private HashMap<String,ToggleButton> bedButtonSets;
-    private HashMap<String,ToggleButton> blindButtonSets;
-
+    private HashMap<String, ToggleButton> bedButtonSets;
+    private HashMap<String, ToggleButton> blindButtonSets;
 
 
     public void setWeeks(ViewGroup rootView) {
         toggleButtonHashMap = new HashMap<>();
-
-
+        setButtonHashMap = new HashMap<>();
+        Log.i("isChecked()","do");
         for (int i = 0; i < ButtonIdSets.length; i++) {
             ToggleButton setButton = rootView.findViewById(ButtonIdSets[i]);
 
             String day = weeksString[i];
-            if (toggleButtonHashMap.get(setButton) == null)
+            if (toggleButtonHashMap.get(setButton) == null) {
                 toggleButtonHashMap.put(setButton, day);
+                setButtonHashMap.put(day, setButton);
+            }
+
+        }
+
+//        Log.i("isChecked()",gson.toJson(setButtonHashMap.keySet()));
+//        Log.i("isChecked()",gson.toJson(setButtonHashMap.values()));
+//
+
+    }
+    public void setReset(){
+        for (int i = 0; i < setButtonHashMap.size(); i++) {
+            ToggleButton button = setButtonHashMap.get(weeksString[i]);
+            button.setChecked(false);
         }
     }
-
 
     @Override
     public void onStart() {
         super.onStart();
+        setReset();
+        Log.i("lifeCycle","on");
 //        Intent i = new Intent("toService");
 //        i.putExtra("request", "AlarmSetting");
 //        LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
         // 초기값 받아오기 요청
+
+
         Intent intentAlarm = new Intent("toService");
         Alarm getAlarm = new Alarm();
 
@@ -100,7 +116,7 @@ public class AlarmSetting extends Fragment {
 
         Intent intentDetail = new Intent("toService");
         AlarmData[] getDetail = {
-                new AlarmData(),new AlarmData(),new AlarmData()
+                new AlarmData(), new AlarmData(), new AlarmData()
         };
 
         LatteMessage getInit2 = new LatteMessage(vo.getUserNo(), "AlarmJob", "get", gson.toJson(getDetail));
@@ -146,7 +162,7 @@ public class AlarmSetting extends Fragment {
 //
                     String[] days = gson.fromJson(alarm.getWeeks(), String[].class);
                     // 서버에서 받아온 설정된 시간으로 timePicker 시간 설정
-                    if (alarm.isFlag()) {
+                    if ("Y".equals(alarm.getFlag())) {
                         int hour = Integer.valueOf(alarm.getHour());
                         int min = Integer.valueOf(alarm.getMin());
                         timePicker.setHour(hour);
@@ -173,31 +189,31 @@ public class AlarmSetting extends Fragment {
 
                     // Alarm Job
                 } else if ((data = intent.getStringExtra("setAlarmData")) != null) {
-                    Log.i("inFragment","inFragment: "+data);
-                    LatteMessage lmsg = gson.fromJson(data,LatteMessage.class);
-                    AlarmData[] alarmDatas= gson.fromJson(lmsg.getJsonData(),AlarmData[].class);
-                    Log.i("request",gson.toJson(alarmDatas));
-                    for(AlarmData aData : alarmDatas){
-                        if("Light".equals(aData.getType())&&"On".equals(aData.getStates())){
+                    Log.i("inFragment", "inFragment: " + data);
+                    LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
+                    AlarmData[] alarmDatas = gson.fromJson(lmsg.getJsonData(), AlarmData[].class);
+                    Log.i("request", gson.toJson(alarmDatas));
+                    for (AlarmData aData : alarmDatas) {
+                        if ("Light".equals(aData.getType()) && "On".equals(aData.getStates())) {
 
                             int power = Integer.valueOf(aData.getStateDetail());
-                            hope_light_seekBar.setProgress(power,true);
-                        }else if("Bed".equals(aData.getType())){
+                            hope_light_seekBar.setProgress(power, true);
+                        } else if ("Bed".equals(aData.getType())) {
                             String value = aData.getStates();
-                            for(ToggleButton bed : bedButtonSets.values()){
-                                if(bedButtonSets.get(value).equals(bed)){
+                            for (ToggleButton bed : bedButtonSets.values()) {
+                                if (bedButtonSets.get(value).equals(bed)) {
                                     bed.setChecked(true);
-                                }else{
+                                } else {
                                     bed.setChecked(false);
                                 }
                             }
 //                            bedButtonSets.get(value).setChecked(true);
-                        }else if("Blind".equals(aData.getType())){
+                        } else if ("Blind".equals(aData.getType())) {
                             String value = aData.getStates();
-                            for(ToggleButton blind : blindButtonSets.values()){
-                                if(blindButtonSets.get(value).equals(blind)){
+                            for (ToggleButton blind : blindButtonSets.values()) {
+                                if (blindButtonSets.get(value).equals(blind)) {
                                     blind.setChecked(true);
-                                }else{
+                                } else {
                                     blind.setChecked(false);
                                 }
                             }
@@ -280,12 +296,12 @@ public class AlarmSetting extends Fragment {
         bedButtonSets = new HashMap<>();
         blindButtonSets = new HashMap<>();
 
-        bedButtonSets.put("0",bedHopeDegree0);
-        bedButtonSets.put("45",bedHopeDegree45);
-        bedButtonSets.put("90",bedHopeDegree90);
+        bedButtonSets.put("0", bedHopeDegree0);
+        bedButtonSets.put("45", bedHopeDegree45);
+        bedButtonSets.put("90", bedHopeDegree90);
 
-        blindButtonSets.put("OPEN",blindHopeOPEN);
-        blindButtonSets.put("CLOSE",blindHopeCLOSE);
+        blindButtonSets.put("OPEN", blindHopeOPEN);
+        blindButtonSets.put("CLOSE", blindHopeCLOSE);
 
         sendToServer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,7 +327,7 @@ public class AlarmSetting extends Fragment {
                 String daysJson = gson.toJson(days);
 
                 alarm.setUserNo(vo.getUserNo());
-                alarm.setFlag(true);
+                alarm.setFlag("Y");
                 alarm.setHour("" + timePicker.getHour());
                 alarm.setMin("" + timePicker.getMinute());
                 alarm.setWeeks(daysJson);
@@ -350,9 +366,6 @@ public class AlarmSetting extends Fragment {
 
             }
         });
-
-
-
 
 
         // Inflate the layout for this fragment

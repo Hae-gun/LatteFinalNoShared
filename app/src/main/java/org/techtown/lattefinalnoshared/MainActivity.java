@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private AlarmSetting alarmSetting = new AlarmSetting();
     private BottomNavigationView bottomNavigationView;
     private LinkedList<Integer> navigationSet = new LinkedList<Integer>();
-    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+//    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+//    public static Gson gson = new Gson();
     private SingletoneVO vo = SingletoneVO.getInstance();
     private BroadcastReceiver checkIdReceiver;
 
@@ -139,8 +141,10 @@ public class MainActivity extends AppCompatActivity {
 
 //        FragmentManager manager = getSupportFragmentManager();
 //        manager.beginTransaction().replace(R.id.FragmentContainer, login).commit();
-
-        replaceFragment(login);
+        // 로그인 창
+//        replaceFragment(login);
+        // 로그인 없이 바로
+        replaceFragment(roomCurrentSetting);
 
         checkIdReceiver = new BroadcastReceiver() {
             @Override
@@ -149,11 +153,21 @@ public class MainActivity extends AppCompatActivity {
                 if ((data = intent.getExtras().getString("LoginPermission")) != null) {
                     LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
                     String code2 = lmsg.getCode2();
+                    Log.i("inMain",data);
+                    Log.i("inMain",vo.getMacaddress());
                     if ("SUCCESS".equals(code2)) {
 
 
                         Log.i("loginSuc",data);
                         Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show();
+                        Guest guest = gson.fromJson(lmsg.getJsonData(),Guest.class);
+
+                        if(vo.getMacaddress().equals(guest.getAuthCode())){
+                            vo.setAuthority(true);
+                            Log.i("inMain",""+vo.getAuthority());
+                        }else{
+                            vo.setAuthority(false);
+                        }
                         replaceFragment(roomList);
                         enableBottomBar(bottomNavigationView, true);
 
@@ -162,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
                         navigationSet.addLast(0);
                         navigationSet.addLast(0);
 
-                    } else if ("cannotLogin".equals(data)) {
+                    } else{
+
                         Log.i("cannotLogin",data);
                         Toast.makeText(context, "아이디 또는 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
                     }

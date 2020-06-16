@@ -45,4 +45,14 @@ public class RoomListData {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    @Override
+    public String toString() {
+        return "RoomListData{" +
+                "roomName='" + roomName + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
 }

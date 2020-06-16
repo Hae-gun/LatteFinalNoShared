@@ -2,7 +2,8 @@ package org.techtown.lattefinalnoshared.VO;
 
 public class AlarmData {
 	private String dataNo;
-	private String userNo;
+//	private String userNo;
+	private String alarmNo;
 	private String type;
 	private String states;
 	private String stateDetail;
@@ -11,8 +12,9 @@ public class AlarmData {
 
 	}
 
-	public AlarmData(String userNo, String type, String states, String stateDetail) {
-		this.userNo = userNo;
+	public AlarmData(String alarmNo, String type, String states, String stateDetail) {
+//		this.userNo = userNo;
+		this.alarmNo = alarmNo;
 		this.type = type;
 		this.states = states;
 		this.stateDetail = stateDetail;
@@ -26,14 +28,23 @@ public class AlarmData {
 		this.dataNo = dataNo;
 	}
 	
-	public String getUserNo() {
-		return userNo;
+//	public String getUserNo() {
+//		return userNo;
+//	}
+//
+//	public void setUserNo(String userNo) {
+//		this.userNo = userNo;
+//	}
+
+
+	public String getAlarmNo() {
+		return alarmNo;
 	}
-	
-	public void setUserNo(String userNo) {
-		this.userNo = userNo;
+
+	public void setAlarmNo(String alarmNo) {
+		this.alarmNo = alarmNo;
 	}
-	
+
 	public String getType() {
 		return type;
 	}
@@ -60,7 +71,7 @@ public class AlarmData {
 
 	@Override
 	public String toString() {
-		return "AlarmData [dataNo=" + dataNo + ", userNo=" + userNo + ", type=" + type + ", states=" + states
+		return "AlarmData [dataNo=" + dataNo + ", alarmNo=" + alarmNo + ", type=" + type + ", states=" + states
 				+ ", stateDetail=" + stateDetail + "]";
 	}
 	

@@ -6,6 +6,7 @@ public class UserVO {
     private String pw;
     private String MacAddr;
 
+
     public UserVO(String id, String pw) {
         this.id = id;
         this.pw = pw;

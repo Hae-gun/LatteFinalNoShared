@@ -8,6 +8,7 @@ public class SingletoneVO {
     private String roomNo;
     private String role;
     private boolean authority;
+    private Alarm alarm;
 
     public static SingletoneVO vo = new SingletoneVO();
 
@@ -19,6 +20,13 @@ public class SingletoneVO {
         return vo;
     }
 
+    public Alarm getAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(Alarm alarm) {
+        this.alarm = alarm;
+    }
 
     public String getMacaddress() {
         return Macaddress;

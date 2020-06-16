@@ -1,5 +1,6 @@
 package org.techtown.lattefinalnoshared.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import org.techtown.lattefinalnoshared.R;
 import org.techtown.lattefinalnoshared.VO.RoomListData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
 
@@ -26,6 +28,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     }
 
     private ArrayList<RoomListData> listData = new ArrayList<>();
+    private HashMap<String, RoomListData> checkMap = new HashMap<>();
 
     @NonNull
     @Override
@@ -46,7 +49,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     }
 
     public void addItem(RoomListData data) {
-        listData.add(data);
+        if (!checkMap.containsKey(data.getRoomName())) {
+            checkMap.put(data.getRoomName(), data);
+            listData.add(data);
+        }
+        Log.i("addItem", data.toString());
+        Log.i("addItem", "" + listData.size());
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -65,10 +73,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         }
 
         void onBind(RoomListData data) {
-            textViewDate.setText(data.getStartDate());
-            textViewContent.setText(data.getEndDate());
-            textViewTitle.setText(data.getRoomName());
-            Glide.with(fragment).load(data.getImgUrl()).into(imageView);
+            if (!listData.isEmpty()) {
+                Log.i("onBind", "start");
+                textViewDate.setText(data.getRoomName());
+                textViewContent.setText(data.getStartDate());
+                textViewTitle.setText(data.getEndDate());
+                Glide.with(fragment).load(data.getImgUrl()).into(imageView);
+                Log.i("onBind", "end");
+            }else{
+
+            }
+
         }
     }
 }
