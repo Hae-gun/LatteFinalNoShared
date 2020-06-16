@@ -52,7 +52,7 @@ public class TCPIPConnectionService extends Service {
       private static final String HOST = "70.12.60.99";
 //    private static final String HOST = "192.168.35.103";
 
-    private static final int PORT = 55577;
+    private static final int PORT = 55566;
     private static String MACAddress = "";
     private static final String CHANNEL_ID = "ForeGroundServiceChannel";
     private Socket socket;

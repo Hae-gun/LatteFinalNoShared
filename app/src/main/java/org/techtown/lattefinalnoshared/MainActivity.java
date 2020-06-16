@@ -142,9 +142,9 @@ public class MainActivity extends AppCompatActivity {
 //        FragmentManager manager = getSupportFragmentManager();
 //        manager.beginTransaction().replace(R.id.FragmentContainer, login).commit();
         // 로그인 창
-//        replaceFragment(login);
+        replaceFragment(login);
         // 로그인 없이 바로
-        replaceFragment(roomCurrentSetting);
+//        replaceFragment(roomCurrentSetting);
 
         checkIdReceiver = new BroadcastReceiver() {
             @Override
