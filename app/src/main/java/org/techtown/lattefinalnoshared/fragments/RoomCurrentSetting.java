@@ -133,7 +133,7 @@ public class RoomCurrentSetting extends Fragment {
         views = new HashMap<>();
 
         userID = rootView.findViewById(R.id.userID);
-        String[] viewName = {"TEMP", "COOL","HEAT", "HUMI", "LIGHT", "BLIND", "DOOR"}; //HEAT 추가
+        String[] viewName = {"TEMP", "COOL", "HEAT", "HUMI", "LIGHT", "BLIND", "DOOR"}; //HEAT 추가
         componentMap.put("userID", userID);
 
         sensorThermo = rootView.findViewById(R.id.sensorThermo);
@@ -193,140 +193,205 @@ public class RoomCurrentSetting extends Fragment {
         blindOPEN = rootView.findViewById(R.id.blindHopeOPEN);
         blindCLOSE = rootView.findViewById(R.id.blindHopeCLOSE);
 
+//        ToggleButton deleteBed0 = rootView.findViewById(R.id.deleteBed0);
+//        ToggleButton deleteBed45 = rootView.findViewById(R.id.deleteBed45);
+//        ToggleButton deleteBed90 = rootView.findViewById(R.id.deleteBed90);
+//
+//        deleteBed0.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (deleteBed0.isChecked()) {
+//                    deleteBed45.setChecked(false);
+//                    deleteBed90.setChecked(false);
+//
+//                    SensorData sensorData = new SensorData();
+//                    Date date = new Date(System.currentTimeMillis());
+//                    sensorData.setTime(date);
+//                    sensorData.setDataNo(vo.getRoomNo());
+//                    sensorData.setStates("0");
+//                    sensorData.setSensorNo("DEVICE023");
+//                    LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "CONTROL", "BED", gson.toJson(sensorData));
+////                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+//                    sendToService("toService", "blindSet", gson.toJson(lmsg));
+////                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+//                }
+//                }
+//            });
+//        deleteBed45.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (deleteBed45.isChecked()) {
+//                    deleteBed0.setChecked(false);
+//                    deleteBed90.setChecked(false);
+//
+//                    SensorData sensorData = new SensorData();
+//                    Date date = new Date(System.currentTimeMillis());
+//                    sensorData.setTime(date);
+//                    sensorData.setDataNo(vo.getRoomNo());
+//                    sensorData.setStates("45");
+//                    sensorData.setSensorNo("DEVICE023");
+//                    LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "CONTROL", "BED", gson.toJson(sensorData));
+////                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+//                    sendToService("toService", "blindSet", gson.toJson(lmsg));
+////                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+//                }
+//                }
+//            });
+//        deleteBed0.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (deleteBed0.isChecked()) {
+//                    deleteBed45.setChecked(false);
+//                    deleteBed90.setChecked(false);
+//
+//                    SensorData sensorData = new SensorData();
+//                    Date date = new Date(System.currentTimeMillis());
+//                    sensorData.setTime(date);
+//                    sensorData.setDataNo(vo.getRoomNo());
+//                    sensorData.setStates("0");
+//                    sensorData.setSensorNo("DEVICE023");
+//                    LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "CONTROL", "BED", gson.toJson(sensorData));
+////                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+//                    sendToService("toService", "blindSet", gson.toJson(lmsg));
+////                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+//                }
+//                }
+//            });
 
-        //  서버에서 받아오는 값 컴포넌트에 지정하는 Broadcast Receiver.
-        currentBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String data = "";
 
-                Log.i("BBBBBB", vo.getId());
+            //  서버에서 받아오는 값 컴포넌트에 지정하는 Broadcast Receiver.
+            currentBroadcastReceiver =new BroadcastReceiver() {
+                @Override
+                public void onReceive (Context context, Intent intent){
+                    String data = "";
+
+                    Log.i("BBBBBB", vo.getId());
 //                if(getStringFromIntent(data,intent, "Setting")) {
-                if (intent.getStringExtra("Setting") != null) {
-                    data = intent.getStringExtra("Setting");
-                    // 초기 값 셋팅.
-                    Log.i("SettingFrag", data);
-                    LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
+                    if (intent.getStringExtra("Setting") != null) {
+                        data = intent.getStringExtra("Setting");
+                        // 초기 값 셋팅.
+                        Log.i("SettingFrag", data);
+                        LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
 
-                    String code1 = lmsg.getCode1();
-                    String code2 = lmsg.getCode2();
+                        String code1 = lmsg.getCode1();
+                        String code2 = lmsg.getCode2();
 
-                    if ("RoomDetail".toUpperCase().equals(code1) && "SUCCESS".equals(code2)) {
-                        RoomDetail roomDetail = gson.fromJson(lmsg.getJsonData(), RoomDetail.class);
-                        Hope hope = roomDetail.getHope();
-                        Alarm alarm = roomDetail.getAlarm();
-                        vo.setAlarm(alarm);
-                        alarmHour = alarm.getHour();
-                        alarmMin = alarm.getMin();
+                        if ("RoomDetail".toUpperCase().equals(code1) && "SUCCESS".equals(code2)) {
+                            RoomDetail roomDetail = gson.fromJson(lmsg.getJsonData(), RoomDetail.class);
+                            Hope hope = roomDetail.getHope();
+                            Alarm alarm = roomDetail.getAlarm();
+                            vo.setAlarm(alarm);
+                            alarmHour = alarm.getHour();
+                            alarmMin = alarm.getMin();
 
-                        thermo_sbValue.setText(hope.getTemp() + "ºC");
-                        thermo_seekBar.setProgress(Integer.valueOf(hope.getTemp()));
+                            thermo_sbValue.setText(hope.getTemp() + "ºC");
+                            thermo_seekBar.setProgress(Integer.valueOf(hope.getTemp()));
 
-                        lightPower.setText(hope.getLight() + "%");
+                            lightPower.setText(hope.getLight() + "%");
 //                    hope_light_seekBar.setProgress(Integer.valueOf(hope.getLight()));
 
-                        LinkedList<String> sensorNoSet = new LinkedList<>();
-                        LinkedList<String> sensorTypeSet = new LinkedList<>();
-                        sensorTypeID = new HashMap<>();
+                            LinkedList<String> sensorNoSet = new LinkedList<>();
+                            LinkedList<String> sensorTypeSet = new LinkedList<>();
+                            sensorTypeID = new HashMap<>();
 
 
-                        List<Sensor> sensors = roomDetail.getSensorList();
-                        for (Sensor sensor : sensors) {
-                            sensorTypeID.put(sensor.getType(), sensor.getSensorNo());
+                            List<Sensor> sensors = roomDetail.getSensorList();
+                            for (Sensor sensor : sensors) {
+                                sensorTypeID.put(sensor.getType(), sensor.getSensorNo());
 //                            sensorNoSet.addLast(sensor.getSensorNo());
 //                            sensorTypeSet.addLast(sensor.getType());
 
 
-                            String type = sensor.getType();
-                            String states = sensor.getStates();
-                            TextView textView = views.get(type);
-                            if ("LIGHT".equals(type)) {
-                                String value = sensor.getStateDetail();
-                                textView.setText(value + "%");
+                                String type = sensor.getType();
+                                String states = sensor.getStates();
+                                TextView textView = views.get(type);
+                                if ("LIGHT".equals(type)) {
+                                    String value = sensor.getStateDetail();
+                                    textView.setText(value + "%");
 
-                                if ("on".equals(states)) {
-                                    lightOnOff.setChecked(true);
-                                    lightPower.setText(value + "%");
-                                    hope_light_seekBar.setProgress(Integer.valueOf(value));
-                                } else {
-                                    lightOnOff.setChecked(false);
-                                    hope_light_seekBar.setProgress(0);
-                                }
-                            } else {
-                                if ("cool".toUpperCase().equals(type)) {// || "heat".toUpperCase().equals(type)
-                                    textView.setText(type + ": " + states);
-                                } else if ("temp".toUpperCase().equals(type)) {
-
-                                    textView.setText(states + "ºC");
-                                } else if ("humi".toUpperCase().equals(type)) {
-                                    textView.setText(states + "%");
-                                } else if ("blind".toUpperCase().equals(type)) {
-                                    if ("1".toUpperCase().equals(states)) {
-                                        textView.setText("OPEN");
-                                        blindOPEN.setChecked(true);
-                                        blindCLOSE.setChecked(false);
+                                    if ("on".equals(states)) {
+                                        lightOnOff.setChecked(true);
+                                        lightPower.setText(value + "%");
+                                        hope_light_seekBar.setProgress(Integer.valueOf(value));
                                     } else {
-                                        textView.setText("CLOSE");
-                                        blindOPEN.setChecked(false);
-                                        blindCLOSE.setChecked(true);
+                                        lightOnOff.setChecked(false);
+                                        hope_light_seekBar.setProgress(0);
+                                    }
+                                } else {
+                                    if ("cool".toUpperCase().equals(type)) {// || "heat".toUpperCase().equals(type)
+                                        textView.setText(type + ": " + states);
+                                    } else if ("temp".toUpperCase().equals(type)) {
+
+                                        textView.setText(states + "ºC");
+                                    } else if ("humi".toUpperCase().equals(type)) {
+                                        textView.setText(states + "%");
+                                    } else if ("blind".toUpperCase().equals(type)) {
+                                        if ("1".toUpperCase().equals(states)) {
+                                            textView.setText("OPEN");
+                                            blindOPEN.setChecked(true);
+                                            blindCLOSE.setChecked(false);
+                                        } else {
+                                            textView.setText("CLOSE");
+                                            blindOPEN.setChecked(false);
+                                            blindCLOSE.setChecked(true);
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        Log.i("sensorListSet", sensorNoSet.toString());
-                        Log.i("sensorListSet", sensorTypeSet.toString());
-                        // 알람 초기값 셋팅.
-                        boolean flag = true;
-                        if ("Y".equals(alarm.getFlag())) {
-                            alarmState.setText("On".toUpperCase());
-                            flag = true;
-                        } else if ("N".equals(alarm.getFlag())) {
-                            alarmState.setText("Off".toUpperCase());
-                            flag = false;
-                        }
-                        alarmTime.setText(alarm.getHour() + ":" + alarm.getMin());
-                        alarmDates.setText(alarm.getWeeks());
-                        alarmOnOff.setChecked(flag);
+                            Log.i("sensorListSet", sensorNoSet.toString());
+                            Log.i("sensorListSet", sensorTypeSet.toString());
+                            // 알람 초기값 셋팅.
+                            boolean flag = true;
+                            if ("Y".equals(alarm.getFlag())) {
+                                alarmState.setText("On".toUpperCase());
+                                flag = true;
+                            } else if ("N".equals(alarm.getFlag())) {
+                                alarmState.setText("Off".toUpperCase());
+                                flag = false;
+                            }
+                            alarmTime.setText(alarm.getHour() + ":" + alarm.getMin());
+                            alarmDates.setText(alarm.getWeeks());
+                            alarmOnOff.setChecked(flag);
 
-                        userID.setText(vo.getId());
-                        roomName.setText(roomDetail.getRoomNo());
-                        Log.i("inRoomCurrentSetting", "inFragCurrent: " + data);
-                    } else if ("Update".equals(code1)) {
-                        Log.i("Update", data);
-                        SensorData sensorData = gson.fromJson(lmsg.getJsonData(), SensorData.class);
-                        String states = sensorData.getStates();
-                        if("TEMP".equals(code2)){
-                            Log.i("Update", states);
-                            sensorThermo.setText(states);
-                        }
+                            userID.setText(vo.getId());
+                            roomName.setText(roomDetail.getRoomNo());
+                            Log.i("inRoomCurrentSetting", "inFragCurrent: " + data);
+                        } else if ("Update".equals(code1)) {
+                            Log.i("Update", data);
+                            SensorData sensorData = gson.fromJson(lmsg.getJsonData(), SensorData.class);
+                            String states = sensorData.getStates();
+                            if ("TEMP".equals(code2)) {
+                                Log.i("Update", states);
+                                sensorThermo.setText(states);
+                            }
 //                        else if("HUMI".equals(code2)){
 //
 //                        }
 
 
 //                        sensorBlind.setText(sensorData.getStates());
-                    }else if("CONTROL".equals(code1)||"Control".equals(code1)){
-                        SensorData sensorData = gson.fromJson(lmsg.getJsonData(),SensorData.class);
-                        String states = sensorData.getStates();
-                        String statesDetail="";
-                        if(sensorData.getStateDetail()!=null){
-                            statesDetail = sensorData.getStateDetail();
-                        }
-                        if("COOL".equals(code2)){
-                            sensorAircon.setText("COOL: "+states);
-                        }else if("HEAT".equals(code2)){
-                            sensorHeater.setText("HEAT: "+states);
-                        }else if("DOOR".equals(code2)){
-                            sensorDoor.setText(states);
-                        }else if("BLIND".equals(code2)){
-                            sensorBlind.setText(states);
-                        }else if("TEMP".equals(code2)){
-                            Log.i("data","why?");
-                            sensorThermo.setText(states+"-");
+                        } else if ("CONTROL".equals(code1) || "Control".equals(code1)) {
+                            SensorData sensorData = gson.fromJson(lmsg.getJsonData(), SensorData.class);
+                            String states = sensorData.getStates();
+                            String statesDetail = "";
+                            if (sensorData.getStateDetail() != null) {
+                                statesDetail = sensorData.getStateDetail();
+                            }
+                            if ("COOL".equals(code2)) {
+                                sensorAircon.setText("COOL: " + states);
+                            } else if ("HEAT".equals(code2)) {
+                                sensorHeater.setText("HEAT: " + states);
+                            } else if ("DOOR".equals(code2)) {
+                                sensorDoor.setText(states);
+                            } else if ("BLIND".equals(code2)) {
+                                sensorBlind.setText(states);
+                            } else if ("TEMP".equals(code2)) {
+                                Log.i("data", "why?");
+                                sensorThermo.setText(states + "-");
+                            }
                         }
                     }
-                }
 //                if ((data = getStringFromIntent(intent, "current")) != null) {
 //                if(getStringFromIntent(data,intent, "current")){
 //                    sensorDoor.setText(data);
@@ -340,31 +405,39 @@ public class RoomCurrentSetting extends Fragment {
 //                    userID.setText(data);
 //                }
 
+                }
             }
-        };
 
-        LocalBroadcastManager.getInstance((MainActivity) getActivity())
-                .registerReceiver(currentBroadcastReceiver, new IntentFilter("currentRoomSetting"));
+            ;
 
-        // 서버로 설정값 보내는 컴포넌트 이벤트
+        LocalBroadcastManager.getInstance((MainActivity)
 
-        thermo_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
+            getActivity())
+                    .
 
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                thermo_sbValue.setText(progress + "°C");
+            registerReceiver(currentBroadcastReceiver, new IntentFilter("currentRoomSetting"));
+
+            // 서버로 설정값 보내는 컴포넌트 이벤트
+
+        thermo_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+
+            {
+                int progress = 0;
+
+                @Override
+                public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser){
+                    sensorThermo.setText(progress + "°C");
                 this.progress = progress;
 
             }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+                @Override
+                public void onStartTrackingTouch (SeekBar seekBar){
 
             }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+                @Override
+                public void onStopTrackingTouch (SeekBar seekBar){
                 SensorData sensorData = new SensorData();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 //                String sendTime=sdf.format(System.currentTimeMillis());
@@ -392,13 +465,15 @@ public class RoomCurrentSetting extends Fragment {
                     sendToService("toService", "Control", gson.toJson(lmsg));
                 }
             }
-        });
+            });
 
-        hope_light_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        hope_light_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 
+            {
+                @Override
+                public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser){
 
+                    sensorLight.setText(""+progress+"%");
 //                sendToService("toService", "Control", "" + progress);
                 lightPower.setText(progress + "%");
                 SensorData sensorData = new SensorData();
@@ -428,18 +503,18 @@ public class RoomCurrentSetting extends Fragment {
 
             }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+                @Override
+                public void onStartTrackingTouch (SeekBar seekBar){
 
             }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+                @Override
+                public void onStopTrackingTouch (SeekBar seekBar){
                 if (hope_light_seekBar.getProgress() != 0) {
                     prevPower = hope_light_seekBar.getProgress();
                 }
             }
-        });
+            });
 
 
 //        sendEvent(thermoOnOff,"onOffState","" + thermoOnOff.isChecked());
@@ -451,8 +526,10 @@ public class RoomCurrentSetting extends Fragment {
 //        });
 
 //        sendEvent(lightOnOff, "onOffState", "" + lightOnOff.isChecked());
-        lightOnOff.setOnClickListener(new View.OnClickListener() {
-            public String sendData() {
+        lightOnOff.setOnClickListener(new View.OnClickListener()
+
+            {
+                public String sendData () {
                 if (lightOnOff.isChecked()) {
                     light.setStates("On");
                     lightPower.setText(light.getStateDetail() + "%");
@@ -471,8 +548,8 @@ public class RoomCurrentSetting extends Fragment {
                 return gson.toJson(lmsg);
             }
 
-            @Override
-            public void onClick(View v) {
+                @Override
+                public void onClick (View v){
 //                if (lightOnOff.isChecked()) {
 //                    light.setStates("On");
 //                    lightPower.setText(light.getStateDetail() + "%");
@@ -495,9 +572,9 @@ public class RoomCurrentSetting extends Fragment {
 //                    lmsg.setClientNo(vo.getRoomNo());
 //                    sendToService("toService", "Control", gson.toJson(lmsg));
             }
-        });
+            });
 
-        // 알람 On/Off 서버로 전송
+            // 알람 On/Off 서버로 전송
 //        sendEvent(alarmOnOff, "onOffState", "" + alarmOnOff.isChecked());
 //        alarmOnOff.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -506,44 +583,50 @@ public class RoomCurrentSetting extends Fragment {
 //            }
 //        });
 
-        // 블라인드 상태 전송
+            // 블라인드 상태 전송
 //        sendEvent(blindOPEN, "blindState", "OPEN");
 //        sendEvent(blindCLOSE, "blindState", "CLOSE");
-        blindOPEN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                blindCLOSE.setChecked(false);
+//        blindOPEN.setOnClickListener(new View.OnClickListener()
+//
+//            {
+//                @Override
+//                public void onClick (View v){
+//                blindCLOSE.setChecked(false);
+//
+//                SensorData sensorData = new SensorData();
+//                Date date = new Date(System.currentTimeMillis());
+//                sensorData.setTime(date);
+//                sensorData.setDataNo(vo.getRoomNo());
+//                sensorData.setStates("OPEN");
+//                sensorData.setSensorNo(sensorTypeID.get("BLIND"));
+//                LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "Control", "blind", gson.toJson(sensorData));
+////                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+//                sendToService("toService", "blindSet", gson.toJson(lmsg));
+////                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
+//            }
+//            });
+//
+//        blindCLOSE.setOnClickListener(new View.OnClickListener()
+//
+//            {
+//                @Override
+//                public void onClick (View v){
+//                blindOPEN.setChecked(false);
+//                SensorData sensorData = new SensorData();
+//                Date date = new Date(System.currentTimeMillis());
+//                sensorData.setTime(date);
+//                sensorData.setDataNo(vo.getRoomNo());
+//                sensorData.setStates("CLOSE");
+//                sensorData.setSensorNo(sensorTypeID.get("BLIND"));
+//                LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "Control", "blind", gson.toJson(sensorData));
+//                sendToService("toService", "blindSet", gson.toJson(lmsg));
+//            }
+//            });
+        alarmOnOff.setOnClickListener(new View.OnClickListener()
 
-                SensorData sensorData = new SensorData();
-                Date date = new Date(System.currentTimeMillis());
-                sensorData.setTime(date);
-                sensorData.setDataNo(vo.getRoomNo());
-                sensorData.setStates("OPEN");
-                sensorData.setSensorNo(sensorTypeID.get("BLIND"));
-                LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "Control", "blind", gson.toJson(sensorData));
-//                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
-                sendToService("toService", "blindSet", gson.toJson(lmsg));
-//                Log.i("blinddddd", "inFrag] " + gson.toJson(lmsg));
-            }
-        });
-
-        blindCLOSE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                blindOPEN.setChecked(false);
-                SensorData sensorData = new SensorData();
-                Date date = new Date(System.currentTimeMillis());
-                sensorData.setTime(date);
-                sensorData.setDataNo(vo.getRoomNo());
-                sensorData.setStates("CLOSE");
-                sensorData.setSensorNo(sensorTypeID.get("BLIND"));
-                LatteMessage lmsg = new LatteMessage(vo.getRoomNo(), "Control", "blind", gson.toJson(sensorData));
-                sendToService("toService", "blindSet", gson.toJson(lmsg));
-            }
-        });
-        alarmOnOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            {
+                @Override
+                public void onClick (View v){
 
                 LatteMessage lmsg = new LatteMessage();
                 lmsg.setClientNo(vo.getUserNo());
@@ -564,21 +647,26 @@ public class RoomCurrentSetting extends Fragment {
 
                 sendToService("toService", "alarmUpdate", gson.toJson(lmsg));
             }
+            });
+        blindOPEN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blindState = blindOPEN.getTextOn().toString();
+                sensorBlind.setText(blindState);
+                blindCLOSE.setChecked(false);
+            }
         });
-//        blindHopeOPEN.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                blindState = blindHopeOPEN.getTextOn().toString();
-//                blindHopeCLOSE.setChecked(false);
-//            }
-//        });
-//        blindHopeCLOSE.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                blindState = blindHopeCLOSE.getTextOn().toString();
-//                blindHopeOPEN.setChecked(false);
-//            }
-//        });
+        blindCLOSE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blindState = blindCLOSE.getTextOn().toString();
+                sensorBlind.setText(blindState);
+                blindOPEN.setChecked(false);
+            }
+        });
+
+
+        //MAC 비교해서 UI 제어
 
 //        if (vo.getAuthority()) {
 //            thermo_seekBar.setEnabled(true);
@@ -594,38 +682,38 @@ public class RoomCurrentSetting extends Fragment {
 //            lightOnOff.setEnabled(false);
 //        }
 
-        // 초기셋팅 위한 요청 메세지 작성
+            // 초기셋팅 위한 요청 메세지 작성
 
-        Room room = new Room();
+            Room room = new Room();
 //        vo.setRoomNo("R000123");
 //        vo.setRoomNo();
-        //여기서 날짜 비교해서 룸객체 보내기.
+            //여기서 날짜 비교해서 룸객체 보내기.
 
         room.setRoomNo(vo.getRoomNo());
 
-        LatteMessage lmsg = new LatteMessage(vo.getUserNo(), "RoomDetail", null, gson.toJson(room));
+            LatteMessage lmsg = new LatteMessage(vo.getUserNo(), "RoomDetail", null, gson.toJson(room));
 
 
-        sendToService("toService", "request", gson.toJson(lmsg));
+            sendToService("toService","request",gson.toJson(lmsg));
 
         return rootView;
+        }
+
+        public void sendToService (String broadName, String code, String data){
+            Intent i = new Intent(broadName);
+            i.putExtra(code, data);
+            LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
+        }
+
+
+        public void sendEvent (View view, String code, String data){
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendToService("toService", code, data);
+                }
+            });
+        }
+
+
     }
-
-    public void sendToService(String broadName, String code, String data) {
-        Intent i = new Intent(broadName);
-        i.putExtra(code, data);
-        LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
-    }
-
-
-    public void sendEvent(View view, String code, String data) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendToService("toService", code, data);
-            }
-        });
-    }
-
-
-}

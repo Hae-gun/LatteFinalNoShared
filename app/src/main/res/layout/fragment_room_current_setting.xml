@@ -159,7 +159,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="(서버에서 보내줘야됨)외출모드 작동중입니다. \n외출모드 작동시에는 기기조작이 불가합니다."
         android:textSize="15dp" />
 
     <!--    온도조절바-->
@@ -365,6 +364,66 @@
 
 
     </LinearLayout>
+
+<!--    // 임시 삭제예정-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_marginLeft="30dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginRight="30dp"-->
+<!--        android:background="@drawable/roundborder"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginTop="0dp"-->
+<!--            android:layout_marginRight="5dp"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:src="@drawable/bed_icon" />-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:text="침대"-->
+<!--            android:textSize="7pt" />-->
+
+<!--        <ToggleButton-->
+<!--            android:id="@+id/deleteBed0"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:background="@drawable/button_selector"-->
+<!--            android:textAppearance="?android:attr/textAppearanceSmall"-->
+<!--            android:textOff="0°"-->
+<!--            android:textOn="0°" />-->
+<!--        <ToggleButton-->
+<!--            android:id="@+id/deleteBed45"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:background="@drawable/button_selector"-->
+<!--            android:textAppearance="?android:attr/textAppearanceSmall"-->
+<!--            android:textOff="45°"-->
+<!--            android:textOn="45°" />-->
+<!--        <ToggleButton-->
+<!--            android:id="@+id/deleteBed90"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:background="@drawable/button_selector"-->
+<!--            android:textAppearance="?android:attr/textAppearanceSmall"-->
+<!--            android:textOff="90°"-->
+<!--            android:textOn="90°" />-->
+
+<!--    </LinearLayout>-->
 
 
 </LinearLayout>
