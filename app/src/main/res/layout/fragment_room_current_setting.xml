@@ -138,22 +138,7 @@
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->
 <!--            android:orientation="horizontal">-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/noRoom"/>
-<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:text="현관: "&ndash;&gt;-->
-<!--&lt;!&ndash;                android:textStyle="bold"/>&ndash;&gt;-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/sensorDoor"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--&lt;!&ndash;                android:text="ID:sensorDoor" &ndash;&gt;-->
-<!--                />-->
 <!--        </LinearLayout>-->
 
     </LinearLayout>
@@ -385,7 +370,7 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/roundborder"
         android:orientation="horizontal"
-        android:padding="10dp">
+       android:padding="10dp">
         <ToggleButton
             android:id="@+id/alarmOnOff"
             android:layout_width="50dp"
@@ -397,7 +382,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -412,12 +398,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ID:alarmState " />
-                <TextView
-                    android:id="@+id/alarmTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="\t\tID:alarmTime" />
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/alarmDates"
