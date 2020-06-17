@@ -138,8 +138,8 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/button_selector"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textOff="0°"
-            android:textOn="0°" />
+            android:textOff="0"
+            android:textOn="0" />
         <ToggleButton
             android:id="@+id/bedHopeDegree45"
             android:layout_width="50dp"
@@ -148,8 +148,8 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/button_selector"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textOff="45°"
-            android:textOn="45°" />
+            android:textOff="45"
+            android:textOn="45" />
         <ToggleButton
             android:id="@+id/bedHopeDegree90"
             android:layout_width="50dp"
@@ -158,8 +158,8 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/button_selector"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textOff="90°"
-            android:textOn="90°" />
+            android:textOff="90"
+            android:textOn="90" />
 
     </LinearLayout>
 

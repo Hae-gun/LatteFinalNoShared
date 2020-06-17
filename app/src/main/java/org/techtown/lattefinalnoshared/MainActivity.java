@@ -111,10 +111,30 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.tab2:
 //                        if(loginSucFlag){
-                        replaceFragment(roomCurrentSetting);
-//                        if(!fragList.getLast().equals(roomCurrentSetting)) {
-                        navigationSet.addLast(1);
-                        fragList.addLast(roomCurrentSetting);
+                        if(vo.getRoomNo()!=null){
+                            replaceFragment(roomCurrentSetting);
+//                           if(!fragList.getLast().equals(roomCurrentSetting)) {
+                            navigationSet.addLast(1);
+                            fragList.addLast(roomCurrentSetting);
+                            return true;
+                        }
+//                            bottomNavigationView.getMenu().getItem(navigationSet.removeLast()).setChecked(true);
+//                             backFragment();
+//                            replaceFragment(roomList);
+//                            navigationSet.addLast(0);
+//                            fragList.addLast(roomList);
+//                            Log.i("chkNavi",""+bottomNavigationView.getMenu().getItem(0).isChecked());
+//                            Log.i("chkNavi",""+bottomNavigationView.getMenu().getItem(1).isChecked());
+//                            Log.i("chkNavi",""+bottomNavigationView.getMenu().getItem(2).isChecked());
+//                            backFragment();
+                            Toast.makeText(MainActivity.this, "이용가능한 방이 없습니다.", Toast.LENGTH_SHORT).show();
+//                            bottomNavigationView.getMenu().getItem(0).setChecked(true);
+//                            bottomNavigationView.getMenu().getItem(1).setChecked(false);
+//                            menuItem.setChecked(false);
+
+//                            bottomNavigationView.setSelectedItemId(R.id.tab1);
+
+
 //                        }
 //                        }
                         return true;
@@ -145,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(login);
         // 로그인 없이 바로
 //        replaceFragment(roomCurrentSetting);
+        // 알람창 바로
+//        replaceFragment(alarmSetting);
 
         checkIdReceiver = new BroadcastReceiver() {
             @Override
@@ -181,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("cannotLogin",data);
                         Toast.makeText(context, "아이디 또는 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
                     }
+                }else if((data = intent.getExtras().getString("noRoom")) != null) {
+                    replaceFragment(roomList);
+                    Toast.makeText(context, "현재 이용가능한 방이 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         };

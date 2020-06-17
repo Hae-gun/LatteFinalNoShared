@@ -89,6 +89,7 @@ public class TCPIPConnectionService extends Service {
         startForeground(1, notification);
 
 
+
         Log.i("fser", "Point 6");
         getDataReceiver = new BroadcastReceiver() {
             @Override
@@ -97,7 +98,10 @@ public class TCPIPConnectionService extends Service {
                 // json 처리 진행.
                 // 아래서 받은 데이터를 서버로 전송한다.
                 if (intent.getStringExtra("request") != null) {
+
+//                    Log.i("getgetget","start Broad");
                     String request = intent.getStringExtra("request");
+//                    Log.i("request",intent.getStringExtra("request"));
                     send(request);
                 } else if (intent.getStringExtra("current") != null) {
                     String current = intent.getStringExtra("current");
@@ -138,6 +142,7 @@ public class TCPIPConnectionService extends Service {
                     send(message);
                 }else if(intent.getStringExtra("setAlarm") != null){
                     String message = intent.getStringExtra("setAlarm");
+                    Log.i("SettingAlarm",message);
                     send(message);
                 }else if(intent.getStringExtra("getAlarm")!=null){
                     String message = intent.getStringExtra("getAlarm");
@@ -267,6 +272,7 @@ public class TCPIPConnectionService extends Service {
                             executor.submit(getAddr);
                             Log.i("fser", "Point 8");
                             while (socket.isConnected() && !socket.isClosed()) {
+
                                 Log.i("connection","doReadLine");
                                 try {
                                     String line = "";
@@ -317,6 +323,10 @@ public class TCPIPConnectionService extends Service {
                                                 Log.i("inRoomCurrentSetting","inService"+line);
                                                 makeIntent("currentRoomSetting", "Setting", line);
                                             }
+//                                            else{
+//
+//                                                makeIntent("currentRoomSetting", "Setting", line);
+//                                            }
                                         }else if("RESERVELIST".equals(code1)&&code2!=null){
 
                                             Log.i("inRoomCurrentSetting","inService"+line);
@@ -385,6 +395,7 @@ public class TCPIPConnectionService extends Service {
                                     close();
                                 }
                                 Log.i("connection","connecting1");
+
                             }
                             Log.i("connection","connecting2");
                         }
@@ -392,6 +403,7 @@ public class TCPIPConnectionService extends Service {
                     }
                     Log.i("connection","connecting4");
                     notifyAll();
+
                 } while (keepConn);
                 stop();
 
@@ -417,7 +429,10 @@ public class TCPIPConnectionService extends Service {
             socket.connect(new InetSocketAddress(HOST, PORT));
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream());
-
+            if(singletoneVO.getUserNo()!=null){
+                LatteMessage lmsg = new LatteMessage(singletoneVO.getUserNo(),"RECONNECT",null,null);
+                send(gson.toJson(lmsg));
+            }
             connected = true;
             Log.i("TCP/IP", "Service - connect() : success");
         } catch (IOException e) {
