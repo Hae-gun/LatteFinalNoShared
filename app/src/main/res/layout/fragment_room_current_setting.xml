@@ -133,23 +133,23 @@
                 android:text="ID:sensorBlind" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="현관: "
-                android:textStyle="bold"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="현관: "-->
+<!--                android:textStyle="bold"/>-->
 
-            <TextView
-                android:id="@+id/sensorDoor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ID:sensorDoor" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/sensorDoor"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="ID:sensorDoor" />-->
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 
@@ -319,7 +319,7 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/roundborder"
         android:orientation="horizontal"
-        android:padding="10dp">
+       android:padding="10dp">
         <ToggleButton
             android:id="@+id/alarmOnOff"
             android:layout_width="50dp"
@@ -331,7 +331,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -346,12 +347,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ID:alarmState " />
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="알람시각"/>
             <TextView
                 android:id="@+id/alarmTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="\t\tID:alarmTime" />
-            </LinearLayout>
+                android:text="ID:alarmTime" />
+        </LinearLayout>
+
 
             <TextView
                 android:id="@+id/alarmDates"

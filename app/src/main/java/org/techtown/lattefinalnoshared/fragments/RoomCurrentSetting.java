@@ -160,9 +160,9 @@ public class RoomCurrentSetting extends Fragment {
         views.put(viewName[5], sensorBlind);
         componentMap.put("blindState", sensorBlind);
 
-        sensorDoor = rootView.findViewById(R.id.sensorDoor);
-        views.put(viewName[6], sensorDoor);
-        componentMap.put("sensorDoor", sensorDoor);
+//        sensorDoor = rootView.findViewById(R.id.sensorDoor);
+//        views.put(viewName[6], sensorDoor);
+//        componentMap.put("sensorDoor", sensorDoor);
 
         exitModeTextView = rootView.findViewById(R.id.exitModeTextView);
         componentMap.put("exitModeTextView", exitModeTextView);
