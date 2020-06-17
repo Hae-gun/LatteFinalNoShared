@@ -4,3 +4,5 @@
     <item android:state_checked="false" android:drawable="@drawable/alarm_unclick"/>
     <item android:drawable="@drawable/alarm_unclick"/>
 </selector>
+<!--    <item android:state_checked="true" android:drawable="@drawable/alarm_clicked"/>-->
+<!--    <item android:state_checked="false" android:drawable="@drawable/alarm_unclick"/>-->

@@ -131,6 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ID:sensorBlind" />
+
         </LinearLayout>
 
 <!--        <LinearLayout-->
@@ -138,17 +139,6 @@
 <!--            android:layout_height="wrap_content"-->
 <!--            android:orientation="horizontal">-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="현관: "-->
-<!--                android:textStyle="bold"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/sensorDoor"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="ID:sensorDoor" />-->
 <!--        </LinearLayout>-->
 
     </LinearLayout>
@@ -311,6 +301,67 @@
     </LinearLayout>
 
 <!--알람상태확인-->
+
+
+<!--    // 임시 삭제예정-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/roundborder"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/bed_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:text="침대"
+            android:textSize="7pt" />
+
+        <ToggleButton
+            android:id="@+id/deleteBed0"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_selector"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textOff="0°"
+            android:textOn="0°" />
+        <ToggleButton
+            android:id="@+id/deleteBed45"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_selector"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textOff="45°"
+            android:textOn="45°" />
+        <ToggleButton
+            android:id="@+id/deleteBed90"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_selector"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textOff="90°"
+            android:textOn="90°" />
+
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -347,22 +398,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ID:alarmState " />
-            </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="알람시각"/>
-            <TextView
-                android:id="@+id/alarmTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ID:alarmTime" />
-        </LinearLayout>
-
 
             <TextView
                 android:id="@+id/alarmDates"
@@ -375,66 +410,12 @@
 
 
     </LinearLayout>
-
-<!--    // 임시 삭제예정-->
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:layout_marginLeft="30dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_marginRight="30dp"-->
-<!--        android:background="@drawable/roundborder"-->
-<!--        android:orientation="horizontal">-->
-
-<!--        <ImageView-->
-<!--            android:layout_width="35dp"-->
-<!--            android:layout_height="60dp"-->
-<!--            android:layout_marginLeft="10dp"-->
-<!--            android:layout_marginTop="0dp"-->
-<!--            android:layout_marginRight="5dp"-->
-<!--            android:layout_marginBottom="5dp"-->
-<!--            android:src="@drawable/bed_icon" />-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="5dp"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:text="침대"-->
-<!--            android:textSize="7pt" />-->
-
-<!--        <ToggleButton-->
-<!--            android:id="@+id/deleteBed0"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginLeft="20dp"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:background="@drawable/button_selector"-->
-<!--            android:textAppearance="?android:attr/textAppearanceSmall"-->
-<!--            android:textOff="0°"-->
-<!--            android:textOn="0°" />-->
-<!--        <ToggleButton-->
-<!--            android:id="@+id/deleteBed45"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginLeft="20dp"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:background="@drawable/button_selector"-->
-<!--            android:textAppearance="?android:attr/textAppearanceSmall"-->
-<!--            android:textOff="45°"-->
-<!--            android:textOn="45°" />-->
-<!--        <ToggleButton-->
-<!--            android:id="@+id/deleteBed90"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginLeft="20dp"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:background="@drawable/button_selector"-->
-<!--            android:textAppearance="?android:attr/textAppearanceSmall"-->
-<!--            android:textOff="90°"-->
-<!--            android:textOn="90°" />-->
-
-<!--    </LinearLayout>-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/deleteBtn"
+        android:text="임시데이터"
+        />
 
 
 </LinearLayout>

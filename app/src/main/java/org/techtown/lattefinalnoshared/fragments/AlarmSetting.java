@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -44,7 +45,7 @@ public class AlarmSetting extends Fragment {
     private SeekBar hope_light_seekBar;
     private ToggleButton blindHopeOPEN;
     private ToggleButton blindHopeCLOSE;
-
+    private TextView lightTv;
     private Button sendToServer;
     private TimePicker timePicker;
 
@@ -144,7 +145,7 @@ public class AlarmSetting extends Fragment {
         blindHopeCLOSE = rootView.findViewById(R.id.blindHopeCLOSE);
         hope_light_seekBar = rootView.findViewById(R.id.hope_light_seekBar);
         sendToServer = rootView.findViewById(R.id.sendToServer);
-
+        lightTv = rootView.findViewById(R.id.lightPower);
         timePicker = rootView.findViewById(R.id.timePicker);
 
         alarmBroadcastReceiver = new BroadcastReceiver() {
@@ -158,10 +159,15 @@ public class AlarmSetting extends Fragment {
                     String jsonData = msg.getJsonData();
 
                     Alarm alarm = gson.fromJson(jsonData, Alarm.class);
+
+                    alarm.setAlarmNo(vo.getUserNo());
+                    //
 //
-//
-                    String[] days = gson.fromJson(alarm.getWeeks(), String[].class);
+//                    String[] days = gson.fromJson(alarm.getWeeks(), String[].class);
+                    String dayss = alarm.getWeeks();
+                    String[] days = dayss.split(",");
                     // 서버에서 받아온 설정된 시간으로 timePicker 시간 설정
+                    if(alarm.getFlag()!=null)
                     if ("Y".equals(alarm.getFlag())) {
                         int hour = Integer.valueOf(alarm.getHour());
                         int min = Integer.valueOf(alarm.getMin());
@@ -238,6 +244,8 @@ public class AlarmSetting extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 lightPower = "" + i;
+                lightTv.setText(lightPower+"%");
+
             }
 
             @Override
@@ -306,16 +314,26 @@ public class AlarmSetting extends Fragment {
         sendToServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try{
                 Toast.makeText((MainActivity) getActivity(), "서버로 전송!", Toast.LENGTH_SHORT).show();
                 Alarm alarm = new Alarm();
                 LinkedList<String> days = new LinkedList<>();
+                String daysss = "";
+
                 Log.i("checkedDays", gson.toJson(toggleButtonHashMap.values()));
                 for (int i = 0; i < weeksString.length; i++) {
                     ToggleButton btn = (ToggleButton) rootView.findViewById(ButtonIdSets[i]);
                     if (btn.isChecked()) {
-                        days.addLast(toggleButtonHashMap.get(btn));
+                        daysss += toggleButtonHashMap.get(btn) + ",";
+//                        days.addLast(toggleButtonHashMap.get(btn));
                     }
                 }
+                StringBuilder sb = new StringBuilder(daysss);
+
+                Log.i("sbTest",""+sb.toString());
+                Log.i("sbTest",""+sb.length());
+                sb.delete(sb.length()-1,sb.length());
+                Log.i("sbTest",""+sb.toString());
 
 //                for(ToggleButton buttonCheck : toggleButtonHashMap.keySet()){
 //                    if(buttonCheck.isChecked()){
@@ -324,13 +342,15 @@ public class AlarmSetting extends Fragment {
 //                    }
 //                }
 
-                String daysJson = gson.toJson(days);
-
-                alarm.setUserNo(vo.getUserNo());
+//                String daysJson = gson.toJson(days);
+                String daysJson = sb.toString();
+                Log.i("userVoObject",vo.getUserNo());
+                alarm.setAlarmNo(vo.getUserNo());
                 alarm.setFlag("Y");
                 alarm.setHour("" + timePicker.getHour());
                 alarm.setMin("" + timePicker.getMinute());
-                alarm.setWeeks(daysJson);
+//                alarm.setWeeks(daysJson);
+                alarm.setWeeks(sb.toString());
 
                 Log.i("checkedDays", daysJson);
                 Log.i("alarmToString", alarm.toString());
@@ -347,8 +367,15 @@ public class AlarmSetting extends Fragment {
 
                 Log.i("LatteMessage", toggleButtonHashMap.values().toString());
 
+                AlarmData light;
+                if(lightPower.equals("0")){
+                    light = new AlarmData(vo.getUserNo(), "Light", "OFF", lightPower);
+                }else{
+                    light = new AlarmData(vo.getUserNo(), "Light", "ON", lightPower);
+                }
+
                 AlarmData[] alarmDatas = {
-                        new AlarmData(vo.getUserNo(), "Light", "On", lightPower),
+                        light,
                         new AlarmData(vo.getUserNo(), "Bed", bedDegree, null),
                         new AlarmData(vo.getUserNo(), "Blind", blindState, null)
                 };
@@ -364,7 +391,10 @@ public class AlarmSetting extends Fragment {
                 Log.i("LatteMessage", gson.toJson(msg));
                 Log.i("timeData", "hour:" + timePicker.getHour() + "min:" + timePicker.getMinute());
 
-            }
+            }catch(Exception e){
+                    Toast.makeText((MainActivity)getActivity(), "선택되지 않은 알람정보가 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+        }
         });
 
 

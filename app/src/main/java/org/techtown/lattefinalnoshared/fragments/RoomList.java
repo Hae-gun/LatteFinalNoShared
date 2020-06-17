@@ -156,9 +156,13 @@ public class RoomList extends Fragment {
 
                         if(startDate<=toDay &&
                                 toDay<=endDate){
+                            vo.setRoomName(res.getRoomName());
                             vo.setRoomNo(res.getRoomNo());
                             Log.i("canControlRoom","CanControl] "+res.toString());
                         }
+//                        if(vo.getRoomNo()==null){
+//                            vo.setRoomNo("noRoom");
+//                        }
 
                     }
 
