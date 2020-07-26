@@ -10,7 +10,7 @@
 
 
 
-### [Main Activity](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/MainActivity.java)
+### Main Activity([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/MainActivity.java))
 
 * Frame Layout
   * 프래그먼트 화면에 출력 (Bottom Navigation에 의해 제어됨)
