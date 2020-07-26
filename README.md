@@ -20,7 +20,7 @@
 * onBackPressed 메서드를 이용한 화면 제어.
   * 이전 Fragment 화면으로 이동.
 
-### Service
+### Service([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/TCPIPConnectionService.java))
 
 * 소켓통신 ( Socket Network ; TCP/IP )
   * 모든 Activity 와 Fragment 에서 서버에 보낼 데이터를 받아 Server에 전달.
@@ -31,15 +31,34 @@
 
 ### Fragments
 
-#### Login
+* 각 Fragment 가 화면에 표시될 때 서비스로 request 메세지를 전송.
+* 서비스에서 Socket 통신을 통해 JSON 문자열을 받음.
+* 받은 JSON 문자열을 Gson 을 이용하여 LatteMessage 로 객체화.
+* 필요 데이터들을 각 Fragment Component에 설정.
+
+#### Login([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/Login.java))
 
 * userId, password 를 입력받아 서비스로 데이터 전달.
 
-#### RoomList
+* 로그인 실패시 Toast Messgae 출력
 
-#### RoomCurrentSetting
+  ![ezgif.com-crop](README.assets/ezgif.com-crop.gif)
 
-#### AlarmSetting
+* 
+
+#### RoomList([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/RoomList.java))
+
+* Server 에 유저 정보에 대한 방 정보를 요청
+* RecyclerView 를 이용하여 Server 로부터 받은 데이터 출력.
+* Glide 를 이용한 image 표현.
+* 받아온 날짜 정보를 이용하여 기간 연산.
+
+#### RoomCurrentSetting([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/RoomCurrentSetting.java))
+
+* Server 에 현재 사용가능한 방 정보 요청.
+* Server 로 부터 받은 
+
+#### AlarmSetting([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/AlarmSetting.java))
 
 
 
