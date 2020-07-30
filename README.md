@@ -89,7 +89,11 @@
   getDataReceiver = new BroadcastReceiver() {
            @Override
            public void onReceive(Context context, Intent intent) 			{
-               // .. 해당부분에 로직 구현   
+               // 가져온 Intent에서 값 받을때.
+               String data ="";
+               if((data=intent.getStringExtra("key값"))!=null){
+                   // .... 해당부분에 로직 구현 
+               }
             }
       };
   
@@ -99,8 +103,11 @@
   // 다른 Activity or Fragment or Service 등에서 "name" 으로 Intent를 보내주면 해당블록으로 도달함.
   
   // 보낼때.
+  Intent intent = new Intent("지정한 이름");
+  intent.putExtra(key값,value값);
+  
   LocalBroadcastManager.getInstance(
-      (MainActivity) getActivity()).sendBroadcast(보낼 Intent객체);
+      (MainActivity) getActivity()).sendBroadcast(intent);
   ```
 
   
