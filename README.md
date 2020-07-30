@@ -53,6 +53,7 @@
 * RecyclerView 를 이용하여 Server 로부터 받은 데이터 출력. (Adapter 이용 - MVP Pattern)
 * Glide 를 이용한 image 표현.
 * 받아온 날짜 정보를 이용하여 기간 연산.
+* ---------------------------GIF
 
 #### RoomCurrentSetting([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/RoomCurrentSetting.java))
 
@@ -60,12 +61,14 @@
 * Server 로 부터 받은 데이터를 각  TextView에 설정.
 * SeekBar 이용하여 희망온도, 전구 밝기값을 숫자로 받아 서버로 바로 전송.
 * Toggle Button 을 이용하여 전구를 On/Off 지정한다.
+* ---------------------------GIF
 
 #### AlarmSetting([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/AlarmSetting.java))
 
 * Server에서 현재 유저이름으로 저장된 알람정보를 받아온다.
 * 받아온 정보를 분석하여 저장된 시간과 요일을 체크하여 컴포넌트의 상태를 변경한다.
 * 새로 알람을 지정하여 저장 버튼 터치시 서버로 해당 정보를 JSON 문자열로 전송한다.
+* ---------------------------GIF
 
 
 
@@ -155,5 +158,9 @@
 
 ## Protocol
 
+* 추후 정리
 
+## Library
 
+* [Gson](https://sites.google.com/site/gson/gson-user-guide) - Json 변환 라이브러리.
+* [Glide](https://bumptech.github.io/glide/doc/options.html) - url로 ImageView에 Img를 넣어주는 라이브러리.
