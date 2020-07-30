@@ -94,11 +94,13 @@
       };
   
   // BroadcastReceiver 등록.
-  LocalBroadcastManager.getInstance(this)                .registerReceiver(getDataReceiver, new IntentFilter("name"));
+  LocalBroadcastManager.getInstance(this)
+      .registerReceiver(getDataReceiver, new IntentFilter("name"));
   // 다른 Activity or Fragment or Service 등에서 "name" 으로 Intent를 보내주면 해당블록으로 도달함.
   
   // 보낼때.
-  LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(보낼 Intent객체);
+  LocalBroadcastManager.getInstance(
+      (MainActivity) getActivity()).sendBroadcast(보낼 Intent객체);
   ```
 
   
