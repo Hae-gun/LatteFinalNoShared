@@ -9,7 +9,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.util.Log;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,7 +184,7 @@ public class RoomCurrentSetting extends Fragment {
 
         // Alarm TextView
         alarmState = rootView.findViewById(R.id.alarmState);
-        alarmTime = rootView.findViewById(R.id.alarmTime);
+//        alarmTime = rootView.findViewById(R.id.alarmTime);
         alarmDates = rootView.findViewById(R.id.alarmDates);
 
 
@@ -318,10 +318,10 @@ public class RoomCurrentSetting extends Fragment {
 //                Log.i("BBBBBB", vo.getId());
 //                if(getStringFromIntent(data,intent, "Setting")) {
                 if (intent.getStringExtra("Setting") != null) {
-                    Log.i("broadCast", "BroadCastSetting");
+//                    Log.i("broadCast", "BroadCastSetting");
                     data = intent.getStringExtra("Setting");
                     // 초기 값 셋팅.
-                    Log.i("SettingFrag", data);
+//                    Log.i("SettingFrag", data);
                     LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
 
                     String code1 = lmsg.getCode1();
@@ -392,8 +392,8 @@ public class RoomCurrentSetting extends Fragment {
                                 }
                             }
 
-                            Log.i("sensorListSet", sensorNoSet.toString());
-                            Log.i("sensorListSet", sensorTypeSet.toString());
+//                            Log.i("sensorListSet", sensorNoSet.toString());
+//                            Log.i("sensorListSet", sensorTypeSet.toString());
                             // 알람 초기값 셋팅.
                             boolean flag = true;
                             if ("Y".equals(alarm.getFlag())) {
@@ -409,9 +409,9 @@ public class RoomCurrentSetting extends Fragment {
 
                             userID.setText(vo.getId());
                             roomName.setText(vo.getRoomName()+"호");
-                            Log.i("inRoomCurrentSetting", "inFragCurrent: " + data);
+//                            Log.i("inRoomCurrentSetting", "inFragCurrent: " + data);
                         } else if ("Update".equals(code1)) {
-                            Log.i("Update", data);
+//                            Log.i("Update", data);
                             Sensor sensor = gson.fromJson(lmsg.getJsonData(),Sensor.class);
 //                            SensorData sensorData = gson.fromJson(lmsg.getJsonData(), SensorData.class);
 
@@ -476,14 +476,14 @@ public class RoomCurrentSetting extends Fragment {
                             } else if ("BLIND".equals(code2)) {
                                 sensorBlind.setText(states);
                             } else if ("TEMP".equals(code2)) {
-                                Log.i("data", "why?");
+//                                Log.i("data", "why?");
                                 sensorThermo.setText(states + "-");
                             }
                         }
                     } catch (Exception e) {
-                        Log.i("eeeeeeeee","start"+e);
+//                        Log.i("eeeeeeeee","start"+e);
                         sendToService("fromService","noRoom","noRoom");
-                        Log.i("eeeeeeeee","end"+e);
+//                        Log.i("eeeeeeeee","end"+e);
                     }
                 }
 //                if ((data = getStringFromIntent(intent, "current")) != null) {
@@ -728,7 +728,7 @@ public class RoomCurrentSetting extends Fragment {
                     alarm.setFlag("N");
 //                    alarm.setFlag(false);
                 }
-                Log.i("setAlarm", alarm.toString());
+//                Log.i("setAlarm", alarm.toString());
                 lmsg.setJsonData(gson.toJson(alarm));
 
                 sendToService("toService", "alarmUpdate", gson.toJson(lmsg));
@@ -789,7 +789,7 @@ public class RoomCurrentSetting extends Fragment {
         Intent i = new Intent(broadName);
         i.putExtra(code, data);
         LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
-        Log.i("sendToService", "sendToService -finish] code: " + code + " data: " + data);
+//        Log.i("sendToService", "sendToService -finish] code: " + code + " data: " + data);
     }
 
 

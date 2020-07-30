@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.util.Log;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +56,8 @@ public class Login extends Fragment{
                 guest.setLoginID(id);
                 guest.setLoginPW(pw);
                 guest.setAuthCode(singletoneVO.getMacaddress());
-                Log.i("guest",guest.toString());
-                Log.i("guest",gson.toJson(guest));
+//                Log.i("guest",guest.toString());
+//                Log.i("guest",gson.toJson(guest));
 
                 String userJson = gson.toJson(guest);
 

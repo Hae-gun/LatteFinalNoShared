@@ -14,7 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -58,15 +58,15 @@ public class MainActivity extends AppCompatActivity {
 //        final AlarmSetting alarmSetting = new AlarmSetting();
         Intent intent = new Intent(MainActivity.this, TCPIPConnectionService.class);
 
-        Log.i("fser", "Point 1");
+//        Log.i("fser", "Point 1");
         if (Build.VERSION.SDK_INT >= 26) {
-            Log.i("fser", "onStart()");
+//            Log.i("fser", "onStart()");
             getApplicationContext().startForegroundService(intent);
         } else {
             getApplicationContext().startService(intent);
         }
 
-        Log.i("fser", "Point 3");
+//        Log.i("fser", "Point 3");
     }
 
 
@@ -175,18 +175,18 @@ public class MainActivity extends AppCompatActivity {
                 if ((data = intent.getExtras().getString("LoginPermission")) != null) {
                     LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
                     String code2 = lmsg.getCode2();
-                    Log.i("inMain",data);
-                    Log.i("inMain",vo.getMacaddress());
+//                    Log.i("inMain",data);
+//                    Log.i("inMain",vo.getMacaddress());
                     if ("SUCCESS".equals(code2)) {
 
 
-                        Log.i("loginSuc",data);
+//                        Log.i("loginSuc",data);
                         Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show();
                         Guest guest = gson.fromJson(lmsg.getJsonData(),Guest.class);
 
                         if(vo.getMacaddress().equals(guest.getAuthCode())){
                             vo.setAuthority(true);
-                            Log.i("inMain",""+vo.getAuthority());
+//                            Log.i("inMain",""+vo.getAuthority());
                         }else{
                             vo.setAuthority(false);
                         }
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
                     } else{
 
-                        Log.i("cannotLogin",data);
+//                        Log.i("cannotLogin",data);
                         Toast.makeText(context, "아이디 또는 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
                     }
                 }else if((data = intent.getExtras().getString("noRoom")) != null) {
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
 //        fragmentTransaction.replace(R.id.FragmentContainer, fragment).commit();
 //        fragList.addLast(fragment);
-        Log.i("LinkedList", "\nfragList: " + fragList.size() + "\nnagivationSet: " + navigationSet.size());
+//        Log.i("LinkedList", "\nfragList: " + fragList.size() + "\nnagivationSet: " + navigationSet.size());
         fragmentTransaction.replace(R.id.FragmentContainer, fragment).commitAllowingStateLoss();
 //        fragmentTransaction.add(R.id.FragmentContainer, fragment).commitAllowingStateLoss();
     }

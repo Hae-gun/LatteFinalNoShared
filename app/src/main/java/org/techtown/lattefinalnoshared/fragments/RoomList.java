@@ -11,7 +11,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +55,7 @@ public class RoomList extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_room_list, container, false);
 //        roomListImg = rootView.findViewById(R.id.roomListImg);
-        Log.i("roomList","onCreateView() start |||"+this.hashCode());
+//        Log.i("roomList","onCreateView() start |||"+this.hashCode());
 //        Glide.with(this).load("https://i.imgur.com/T7KCxZj.jpg").into(roomListImg);
         userID = rootView.findViewById(R.id.userID);
 
@@ -93,7 +93,7 @@ public class RoomList extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("roomList","onDestroy() start |||"+this.hashCode());
+//        Log.i("roomList","onDestroy() start |||"+this.hashCode());
     }
 
     public void getData(Fragment frag,ViewGroup rootView){
@@ -112,8 +112,8 @@ public class RoomList extends Fragment {
                 if(intent.getStringExtra("Setting")!=null){
                     String data = intent.getStringExtra("Setting");
                     LatteMessage lmsg = gson.fromJson(data,LatteMessage.class);
-                    Log.i("inList","Msg : "+data);
-                    Log.i("inList","json : "+lmsg.getJsonData());
+//                    Log.i("inList","Msg : "+data);
+//                    Log.i("inList","json : "+lmsg.getJsonData());
 
 //                    Reservation[] reservations = dateGson.fromJson(lmsg.getJsonData(),Reservation[].class);
 //                    ArrayList<Reservation> list = dateGson.fromJson(lmsg.getJsonData(),
@@ -128,9 +128,9 @@ public class RoomList extends Fragment {
 
 //                        Date dResult = new Date(result);
 
-                        Log.i("calDate","start: "+res.getStartDate());
-                        Log.i("calDate","end: "+res.getEndDate());
-                        Log.i("calDate",""+result);
+//                        Log.i("calDate","start: "+res.getStartDate());
+//                        Log.i("calDate","end: "+res.getEndDate());
+//                        Log.i("calDate",""+result);
 //                        Log.i("calDate",""+dResult);
 
                         RoomListData roomList = new RoomListData(
@@ -141,11 +141,11 @@ public class RoomList extends Fragment {
                         );
 
                         adapter.addItem(roomList);
-                        Log.i("inList",roomList.toString());
-                        Log.i("inList",res.toString());
+//                        Log.i("inList",roomList.toString());
+//                        Log.i("inList",res.toString());
                         //날짜 비교
                         Date today = new Date(System.currentTimeMillis());
-                        Log.i("canControlRoom","AllList] "+res.toString());
+//                        Log.i("canControlRoom","AllList] "+res.toString());
 
                         long startDate = res.getStartDate().getTime()/(3600000*24);
                         long endDate = res.getEndDate().getTime()/(3600000*24);
@@ -158,7 +158,7 @@ public class RoomList extends Fragment {
                                 toDay<=endDate){
                             vo.setRoomName(res.getRoomName());
                             vo.setRoomNo(res.getRoomNo());
-                            Log.i("canControlRoom","CanControl] "+res.toString());
+//                            Log.i("canControlRoom","CanControl] "+res.toString());
                         }
 //                        if(vo.getRoomNo()==null){
 //                            vo.setRoomNo("noRoom");
@@ -167,7 +167,7 @@ public class RoomList extends Fragment {
                     }
 
 
-                    Log.i("inList",""+list.size());
+//                    Log.i("inList",""+list.size());
 
 
 

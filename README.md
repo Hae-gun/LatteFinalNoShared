@@ -44,21 +44,28 @@
 
   ![ezgif.com-crop](README.assets/ezgif.com-crop.gif)
 
-* 
+
+
 
 #### RoomList([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/RoomList.java))
 
 * Server 에 유저 정보에 대한 방 정보를 요청
-* RecyclerView 를 이용하여 Server 로부터 받은 데이터 출력.
+* RecyclerView 를 이용하여 Server 로부터 받은 데이터 출력. (Adapter 이용 - MVP Pattern)
 * Glide 를 이용한 image 표현.
 * 받아온 날짜 정보를 이용하여 기간 연산.
 
 #### RoomCurrentSetting([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/RoomCurrentSetting.java))
 
 * Server 에 현재 사용가능한 방 정보 요청.
-* Server 로 부터 받은 
+* Server 로 부터 받은 데이터를 각  TextView에 설정.
+* SeekBar 이용하여 희망온도, 전구 밝기값을 숫자로 받아 서버로 바로 전송.
+* Toggle Button 을 이용하여 전구를 On/Off 지정한다.
 
 #### AlarmSetting([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/AlarmSetting.java))
+
+* Server에서 현재 유저이름으로 저장된 알람정보를 받아온다.
+* 받아온 정보를 분석하여 저장된 시간과 요일을 체크하여 컴포넌트의 상태를 변경한다.
+* 새로 알람을 지정하여 저장 버튼 터치시 서버로 해당 정보를 JSON 문자열로 전송한다.
 
 
 
@@ -70,12 +77,38 @@
 
 * 통신 방식
   1. Service, Activity, Fragment 각각 Broadcast Receiver 객체를 갖음.
-  2. Service 에서 Server를 통해 받은 JSON 데이터를 메세지(LatteMessage) 객체로 Parsing 하여 Protocol 을 분석.
-  3. 분석된 객체를 
+  2. LocalBroadcastManager 의 static 매서드를 이용.
+  3. Service 에서 Server를 통해 받은 JSON 데이터를 메세지(LatteMessage) 객체로 Parsing.
+  4. 객체의 프로토콜을 분석하여 해당 객체가 사용되는 Fragment에 전송.
+  5. 전송시 Intent에 값을 JSON String 으로 주입시킨다.
+  
+* Ex)
+
+  ```java
+  // BroadcastReceiver 정의.
+  getDataReceiver = new BroadcastReceiver() {
+           @Override
+           public void onReceive(Context context, Intent intent) 			{
+               // .. 해당부분에 로직 구현   
+            }
+      };
+  
+  // BroadcastReceiver 등록.
+  LocalBroadcastManager.getInstance(this)                .registerReceiver(getDataReceiver, new IntentFilter("name"));
+  // 다른 Activity or Fragment or Service 등에서 "name" 으로 Intent를 보내주면 해당블록으로 도달함.
+  
+  // 보낼때.
+  LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(보낼 Intent객체);
+  ```
+
+  
 
 ## Message
 
 * LatteMessage 구조
+
+  * 큰 Json 문자열(LatteMessage ) 안에 Json 문자열(jsonData)을 객체로 갖고 있는 형태이다.
+  * 약속한 Protocol 에 따라 code1 값을 분석한 후 그에 따른 VO객체를 jsonData 에 주입시킴.
 
   ```java
   public class LatteMessage {
@@ -90,11 +123,26 @@
   }
   ```
 
-* JSON Data
+  
 
-  * 약속한 Protocol 에 따라 code1 값을 분석한 후 그에 따른 VO객체를 jsonData 에 주입시킴.
+  
 
 ## VO
+
+* [Alarm](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/Alarm.java)
+* [AlarmData](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/AlarmData.java)
+* [Guest](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/Guest.java)
+* [Hope](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/Hope.java)
+* [LatteMessage](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/LatteMessage.java)
+* [Message](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/Message.java)
+* [Reservation](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/LatteMessage.java)
+* [Room](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/Room.java)
+* [RoomDetail](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/RoomDetail.java)
+* [RoomListData](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/LatteMessage.java)
+* [Sensor](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/Sensor.java)
+* [SensorData](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/SensorData.java)
+* [SingletoneVO](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/SingletoneVO.java)
+* [UserVO](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/UserVO.java)
 
 ## Protocol
 

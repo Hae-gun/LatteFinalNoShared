@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
+//import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -48,12 +48,12 @@ public class TCPIPConnectionService extends Service {
     private Gson gson = MainActivity.gson;
 
 
-//      private static final String HOST = "70.12.60.97";
-      private static final String HOST = "70.12.60.99";
+    //      private static final String HOST = "70.12.60.97";
+    private static final String HOST = "70.12.60.99";
 //    private static final String HOST = "192.168.35.103";
 
     private static final int PORT = 55566;
-//    private static final int PORT = 55577;
+    //    private static final int PORT = 55577;
     private static String MACAddress = "";
     private static final String CHANNEL_ID = "ForeGroundServiceChannel";
     private Socket socket;
@@ -75,11 +75,11 @@ public class TCPIPConnectionService extends Service {
         super.onCreate();
 
 
-        Log.i("fser", "Point 4");
+//        Log.i("fser", "Point 4");
         start();
         createNotificationChannel();
 
-        Log.i("fser", "Point 5");
+//        Log.i("fser", "Point 5");
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -89,8 +89,7 @@ public class TCPIPConnectionService extends Service {
         startForeground(1, notification);
 
 
-
-        Log.i("fser", "Point 6");
+//        Log.i("fser", "Point 6");
         getDataReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -115,10 +114,10 @@ public class TCPIPConnectionService extends Service {
 
                     String data = gson.toJson(msg, LatteMessage.class);
 
-                    Log.i("LatteMessage", data);
+//                    Log.i("LatteMessage", data);
 
-                    Log.i("BroadcastTest", "guest.toString(): " + guest.toString());
-                    Log.i("BroadcastTest", "data: " + jsonString);
+//                    Log.i("BroadcastTest", "guest.toString(): " + guest.toString());
+//                    Log.i("BroadcastTest", "data: " + jsonString);
                     //UserVO vo = gson.fromJson(data, UserVO.class);
                     send(data);
 //                    if ("A".equals(guest.getLoginID())) {
@@ -140,20 +139,20 @@ public class TCPIPConnectionService extends Service {
                     String message = intent.getStringExtra("blindState");
                     message = "Blind:" + message;
                     send(message);
-                }else if(intent.getStringExtra("setAlarm") != null){
+                } else if (intent.getStringExtra("setAlarm") != null) {
                     String message = intent.getStringExtra("setAlarm");
-                    Log.i("SettingAlarm",message);
+//                    Log.i("SettingAlarm", message);
                     send(message);
-                }else if(intent.getStringExtra("getAlarm")!=null){
+                } else if (intent.getStringExtra("getAlarm") != null) {
                     String message = intent.getStringExtra("getAlarm");
                     send(message);
-                }else if(intent.getStringExtra("Control")!=null){
+                } else if (intent.getStringExtra("Control") != null) {
                     String message = intent.getStringExtra("Control");
                     send(message);
-                }else if(intent.getStringExtra("alarmUpdate")!=null){
+                } else if (intent.getStringExtra("alarmUpdate") != null) {
                     String message = intent.getStringExtra("alarmUpdate");
                     send(message);
-                }else if(intent.getStringExtra("blindSet")!=null){
+                } else if (intent.getStringExtra("blindSet") != null) {
                     String message = intent.getStringExtra("blindSet");
                     send(message);
                 }
@@ -177,8 +176,6 @@ public class TCPIPConnectionService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
 //        Log.i("chkMAC",getLocalMacAddress());
         return super.onStartCommand(intent, flags, startId);
     }
@@ -213,7 +210,7 @@ public class TCPIPConnectionService extends Service {
 //        Log.i("MAC","Point 8");
 //        return result;
         try {
-            Log.i("MAC", "Point 2");
+//            Log.i("MAC", "Point 2");
             List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface nif : all) {
                 if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
@@ -237,7 +234,7 @@ public class TCPIPConnectionService extends Service {
         } catch (Exception ex) {
             //handle exception
         }
-        Log.i("MAC", "Point 3");
+//        Log.i("MAC", "Point 3");
         return "";
     } //getLocalMacAddress() end.
 
@@ -247,7 +244,7 @@ public class TCPIPConnectionService extends Service {
     }
 
     private void start() {
-        Log.i("fser", "Point 7");
+//        Log.i("fser", "Point 7");
         executor = Executors.newFixedThreadPool(3);
 
         Runnable getAddr = new Runnable() {
@@ -257,7 +254,7 @@ public class TCPIPConnectionService extends Service {
             public void run() {
                 MACAddress = getLocalMacAddress();
                 singletoneVO.setMacaddress(MACAddress);
-                Log.i("fser", "point: " + MACAddress);
+//                Log.i("fser", "point: " + MACAddress);
                 send(MACAddress);
             }
         };
@@ -266,18 +263,18 @@ public class TCPIPConnectionService extends Service {
             @Override
             public void run() {
                 do {
-                    Log.i("connection","connecting");
+//                    Log.i("connection", "connecting");
                     if (socket != null || close()) {
                         if (connect()) {
                             executor.submit(getAddr);
-                            Log.i("fser", "Point 8");
+//                            Log.i("fser", "Point 8");
                             while (socket.isConnected() && !socket.isClosed()) {
 
-                                Log.i("connection","doReadLine");
+//                                Log.i("connection", "doReadLine");
                                 try {
                                     String line = "";
                                     line = input.readLine();
-                                    Log.i("fromServer", line);
+//                                    Log.i("fromServer", line);
 //                                    Toast.makeText(TCPIPConnectionService.this, line, Toast.LENGTH_SHORT).show();
 
                                     // 서버에서 받은 Message 객체분해.
@@ -291,9 +288,9 @@ public class TCPIPConnectionService extends Service {
                                         String code2 = msg.getCode2().toUpperCase();
 
                                         if ("LOGIN".equals(code1)) {
-                                            Guest guest = gson.fromJson(msg.getJsonData(),Guest.class);
+                                            Guest guest = gson.fromJson(msg.getJsonData(), Guest.class);
 //                                            Log.i("LOGIN","1111111111");
-                                            if("SUCCESS".equals(code2)){
+                                            if ("SUCCESS".equals(code2)) {
                                                 singletoneVO.setUserNo(guest.getUserNo());
                                                 singletoneVO.setId(guest.getLoginID());
                                                 singletoneVO.setRole(guest.getRole());
@@ -310,49 +307,49 @@ public class TCPIPConnectionService extends Service {
 
 
 //                                            if ("SUCCESS".equals(code2)) {
-                                                Intent i = new Intent("fromService");
-                                                i.putExtra("LoginPermission", gson.toJson(msg));
-                                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+                                            Intent i = new Intent("fromService");
+                                            i.putExtra("LoginPermission", gson.toJson(msg));
+                                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
 //                                            }else if("FAIL".equals(code2)){
 //                                                Intent i = new Intent("fromService");
 //                                                i.putExtra("LoginPermission", gson.toJson(msg));
 //                                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
 //                                            }
-                                        }else if("ROOMDETAIL".equals(code1)){
-                                            if("SUCCESS".equals(code2)){
-                                                Log.i("inRoomCurrentSetting","inService"+line);
+                                        } else if ("ROOMDETAIL".equals(code1)) {
+                                            if ("SUCCESS".equals(code2)) {
+//                                                Log.i("inRoomCurrentSetting", "inService" + line);
                                                 makeIntent("currentRoomSetting", "Setting", line);
                                             }
 //                                            else{
 //
 //                                                makeIntent("currentRoomSetting", "Setting", line);
 //                                            }
-                                        }else if("RESERVELIST".equals(code1)&&code2!=null){
+                                        } else if ("RESERVELIST".equals(code1) && code2 != null) {
 
-                                            Log.i("inRoomCurrentSetting","inService"+line);
+//                                            Log.i("inRoomCurrentSetting", "inService" + line);
                                             makeIntent("roomListSetting", "Setting", line);
-                                        }else if("UPDATE".equals(code1)){
+                                        } else if ("UPDATE".equals(code1)) {
                                             makeIntent("currentRoomSetting", "Setting", line);
-                                            if("blind".equals(code2)){
+                                            if ("blind".equals(code2)) {
                                                 makeIntent("currentRoomSetting", "Setting", line);
                                             }
-                                        }else if("CONTROL".equals(code1)){
-                                                makeIntent("currentRoomSetting", "Setting", line);
+                                        } else if ("CONTROL".equals(code1)) {
+                                            makeIntent("currentRoomSetting", "Setting", line);
                                         }
 
                                     } catch (Exception e) {
-                                        Log.i("error", e.toString());
+//                                        Log.i("error", e.toString());
                                     }
                                     if (line.contains("authCode")) {
-                                        LatteMessage msg = gson.fromJson(line,LatteMessage.class);
+                                        LatteMessage msg = gson.fromJson(line, LatteMessage.class);
                                         String code = gson.fromJson(msg.getJsonData(), Guest.class).getAuthCode();
-                                        Log.i("AuthCode",code);
+//                                        Log.i("AuthCode", code);
                                         if (code.equals(singletoneVO.getMacaddress())) {
                                             singletoneVO.setAuthority(true);
                                         } else {
                                             singletoneVO.setAuthority(false);
                                         }
-                                        Log.i("Authority", "" + singletoneVO.getAuthority());
+//                                        Log.i("Authority", "" + singletoneVO.getAuthority());
                                     }
 
 
@@ -370,18 +367,18 @@ public class TCPIPConnectionService extends Service {
                                         sb.delete(0, 11);
                                         line = sb.toString();
                                         makeIntent("currentRoomSetting", "blindState", line);
-                                        Log.i("BBBBB", line);
+//                                        Log.i("BBBBB", line);
                                     } else if (line.contains("userId:")) {
                                         // 유저 아이디 Fragment에 전송
                                         StringBuilder sb = new StringBuilder(line);
                                         sb.delete(0, 7);
                                         line = sb.toString();
                                         makeIntent("currentRoomSetting", "userId", line);
-                                    } else if(line.contains("Alarm")&&!line.contains("AlarmJob")&&line.contains("get")){
-                                        Log.i("alarmmm","setting");
-                                        makeIntent("alarmDetail","setAlarmTime",line);
-                                    } else if(line.contains("AlarmJob")&&line.contains("get")){
-                                        makeIntent("alarmDetail","setAlarmData",line);
+                                    } else if (line.contains("Alarm") && !line.contains("AlarmJob") && line.contains("get")) {
+//                                        Log.i("alarmmm", "setting");
+                                        makeIntent("alarmDetail", "setAlarmTime", line);
+                                    } else if (line.contains("AlarmJob") && line.contains("get")) {
+                                        makeIntent("alarmDetail", "setAlarmData", line);
                                     }
 
                                     if (line == null) throw new IOException();
@@ -391,17 +388,17 @@ public class TCPIPConnectionService extends Service {
                                         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(sender);
                                     }
                                 } catch (IOException e) {
-                                    Log.i("connect/TCP", "Service - Runnable accept() : " + e);
+//                                    Log.i("connect/TCP", "Service - Runnable accept() : " + e);
                                     close();
                                 }
-                                Log.i("connection","connecting1");
+//                                Log.i("connection", "connecting1");
 
                             }
-                            Log.i("connection","connecting2");
+//                            Log.i("connection", "connecting2");
                         }
-                        Log.i("connection","connecting3");
+//                        Log.i("connection", "connecting3");
                     }
-                    Log.i("connection","connecting4");
+//                    Log.i("connection", "connecting4");
                     notifyAll();
 
                 } while (keepConn);
@@ -424,19 +421,19 @@ public class TCPIPConnectionService extends Service {
 
     private boolean connect() {
         try {
-            Log.i("fser", "Point 9");
+//            Log.i("fser", "Point 9");
             socket = new Socket();
             socket.connect(new InetSocketAddress(HOST, PORT));
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream());
-            if(singletoneVO.getUserNo()!=null){
-                LatteMessage lmsg = new LatteMessage(singletoneVO.getUserNo(),"RECONNECT",null,null);
+            if (singletoneVO.getUserNo() != null) {
+                LatteMessage lmsg = new LatteMessage(singletoneVO.getUserNo(), "RECONNECT", null, null);
                 send(gson.toJson(lmsg));
             }
             connected = true;
-            Log.i("TCP/IP", "Service - connect() : success");
+//            Log.i("TCP/IP", "Service - connect() : success");
         } catch (IOException e) {
-            Log.i("TCP/IP", "Service - connect() : " + e);
+//            Log.i("TCP/IP", "Service - connect() : " + e);
             return false;
         }
         return true;
@@ -444,20 +441,20 @@ public class TCPIPConnectionService extends Service {
 
     private boolean close() {
         try {
-            Log.i("TCP/IP", "Service - close() : start");
+//            Log.i("TCP/IP", "Service - close() : start");
             if (socket != null && !socket.isClosed()) {
                 socket.close();
 
-                Log.i("TCP/IP", "Service - close() :" + socket.isClosed());
+//                Log.i("TCP/IP", "Service - close() :" + socket.isClosed());
                 if (input != null) input.close();
                 if (output != null) output.close();
                 if (input != null) {
-                    Log.i("TCP/IP", "Service - connect() : success");
+//                    Log.i("TCP/IP", "Service - connect() : success");
                     connected = false;
                 }
             }
         } catch (IOException e) {
-            Log.i("TCP/IP", "Service - connect() : " + e);
+//            Log.i("TCP/IP", "Service - connect() : " + e);
             return false;
         }
         return true;
@@ -494,7 +491,7 @@ public class TCPIPConnectionService extends Service {
                     output.println(data);
                     output.flush();
                 } catch (Exception e) {
-                    Log.i("TCP/IP", "Service - send() : " + e);
+//                    Log.i("TCP/IP", "Service - send() : " + e);
                 }
             }
         }

@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.util.Log;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +72,7 @@ public class AlarmSetting extends Fragment {
     public void setWeeks(ViewGroup rootView) {
         toggleButtonHashMap = new HashMap<>();
         setButtonHashMap = new HashMap<>();
-        Log.i("isChecked()","do");
+//        Log.i("isChecked()","do");
         for (int i = 0; i < ButtonIdSets.length; i++) {
             ToggleButton setButton = rootView.findViewById(ButtonIdSets[i]);
 
@@ -100,7 +100,7 @@ public class AlarmSetting extends Fragment {
     public void onStart() {
         super.onStart();
         setReset();
-        Log.i("lifeCycle","on");
+//        Log.i("lifeCycle","on");
 //        Intent i = new Intent("toService");
 //        i.putExtra("request", "AlarmSetting");
 //        LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(i);
@@ -178,7 +178,7 @@ public class AlarmSetting extends Fragment {
 
                     for (ToggleButton button : toggleButtonHashMap.keySet()) {
                         for (String day : days) {
-                            Log.i("arraysss", "" + toggleButtonHashMap.get(button).equals(days));
+//                            Log.i("arraysss", "" + toggleButtonHashMap.get(button).equals(days));
                             if (toggleButtonHashMap.get(button).equals(day)) {
                                 button.setChecked(true);
                             }
@@ -188,17 +188,17 @@ public class AlarmSetting extends Fragment {
 
 //}
 //                    String[] array = gson.fromJson(alarm.getWeeks(),String[].class);
-                    for (String s : days)
-                        Log.i("arraysss", s);
+//                    for (String s : days)
+//                        Log.i("arraysss", s);
 //                    LinkedList<String> days = gson.fromJson(alarm.getWeeks(), LinkedList<String>.class);
 
 
                     // Alarm Job
                 } else if ((data = intent.getStringExtra("setAlarmData")) != null) {
-                    Log.i("inFragment", "inFragment: " + data);
+//                    Log.i("inFragment", "inFragment: " + data);
                     LatteMessage lmsg = gson.fromJson(data, LatteMessage.class);
                     AlarmData[] alarmDatas = gson.fromJson(lmsg.getJsonData(), AlarmData[].class);
-                    Log.i("request", gson.toJson(alarmDatas));
+//                    Log.i("request", gson.toJson(alarmDatas));
                     for (AlarmData aData : alarmDatas) {
                         if ("Light".equals(aData.getType()) && "On".equals(aData.getStates())) {
 
@@ -320,7 +320,7 @@ public class AlarmSetting extends Fragment {
                 LinkedList<String> days = new LinkedList<>();
                 String daysss = "";
 
-                Log.i("checkedDays", gson.toJson(toggleButtonHashMap.values()));
+//                Log.i("checkedDays", gson.toJson(toggleButtonHashMap.values()));
                 for (int i = 0; i < weeksString.length; i++) {
                     ToggleButton btn = (ToggleButton) rootView.findViewById(ButtonIdSets[i]);
                     if (btn.isChecked()) {
@@ -330,10 +330,10 @@ public class AlarmSetting extends Fragment {
                 }
                 StringBuilder sb = new StringBuilder(daysss);
 
-                Log.i("sbTest",""+sb.toString());
-                Log.i("sbTest",""+sb.length());
+//                Log.i("sbTest",""+sb.toString());
+//                Log.i("sbTest",""+sb.length());
                 sb.delete(sb.length()-1,sb.length());
-                Log.i("sbTest",""+sb.toString());
+//                Log.i("sbTest",""+sb.toString());
 
 //                for(ToggleButton buttonCheck : toggleButtonHashMap.keySet()){
 //                    if(buttonCheck.isChecked()){
@@ -344,7 +344,7 @@ public class AlarmSetting extends Fragment {
 
 //                String daysJson = gson.toJson(days);
                 String daysJson = sb.toString();
-                Log.i("userVoObject",vo.getUserNo());
+//                Log.i("userVoObject",vo.getUserNo());
                 alarm.setAlarmNo(vo.getUserNo());
                 alarm.setFlag("Y");
                 alarm.setHour("" + timePicker.getHour());
@@ -352,8 +352,8 @@ public class AlarmSetting extends Fragment {
 //                alarm.setWeeks(daysJson);
                 alarm.setWeeks(sb.toString());
 
-                Log.i("checkedDays", daysJson);
-                Log.i("alarmToString", alarm.toString());
+//                Log.i("checkedDays", daysJson);
+//                Log.i("alarmToString", alarm.toString());
 
                 String jsonData = gson.toJson(alarm);
                 LatteMessage msg = new LatteMessage(vo.getUserNo(), "Alarm", "update", jsonData);
@@ -362,10 +362,10 @@ public class AlarmSetting extends Fragment {
                 alarmI.putExtra("setAlarm", gson.toJson(msg));
                 LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(alarmI);
 
-                Log.i("LatteMessage", gson.toJson(msg));
+//                Log.i("LatteMessage", gson.toJson(msg));
 
 
-                Log.i("LatteMessage", toggleButtonHashMap.values().toString());
+//                Log.i("LatteMessage", toggleButtonHashMap.values().toString());
 
                 AlarmData light;
                 if(lightPower.equals("0")){
@@ -382,14 +382,14 @@ public class AlarmSetting extends Fragment {
 
                 msg.setCode1("AlarmJob");
                 msg.setJsonData(gson.toJson(alarmDatas));
-                Log.i("AlarmData", gson.toJson(alarmDatas));
+//                Log.i("AlarmData", gson.toJson(alarmDatas));
                 Intent alarmDataI = new Intent("toService");
                 alarmDataI.putExtra("setAlarm", gson.toJson(msg));
                 LocalBroadcastManager.getInstance((MainActivity) getActivity()).sendBroadcast(alarmDataI);
 
 
-                Log.i("LatteMessage", gson.toJson(msg));
-                Log.i("timeData", "hour:" + timePicker.getHour() + "min:" + timePicker.getMinute());
+//                Log.i("LatteMessage", gson.toJson(msg));
+//                Log.i("timeData", "hour:" + timePicker.getHour() + "min:" + timePicker.getMinute());
 
             }catch(Exception e){
                     Toast.makeText((MainActivity)getActivity(), "선택되지 않은 알람정보가 있습니다.", Toast.LENGTH_SHORT).show();

@@ -53,8 +53,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             checkMap.put(data.getRoomName(), data);
             listData.add(data);
         }
-        Log.i("addItem", data.toString());
-        Log.i("addItem", "" + listData.size());
+//        Log.i("addItem", data.toString());
+//        Log.i("addItem", "" + listData.size());
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -74,12 +74,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
         void onBind(RoomListData data) {
             if (!listData.isEmpty()) {
-                Log.i("onBind", "start");
+//                Log.i("onBind", "start");
                 textViewDate.setText(data.getRoomName());
                 textViewContent.setText(data.getStartDate());
                 textViewTitle.setText(data.getEndDate());
                 Glide.with(fragment).load(data.getImgUrl()).into(imageView);
-                Log.i("onBind", "end");
+//                Log.i("onBind", "end");
             }else{
 
             }
