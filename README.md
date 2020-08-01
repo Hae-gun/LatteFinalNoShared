@@ -1,4 +1,4 @@
-# LatteFinalNoShared
+LatteFinalNoShared
 
 
 
@@ -53,7 +53,8 @@
 * RecyclerView 를 이용하여 Server 로부터 받은 데이터 출력. (Adapter 이용 - MVP Pattern)
 * Glide 를 이용한 image 표현.
 * 받아온 날짜 정보를 이용하여 기간 연산.
-* ---------------------------GIF
+
+<img src="README.assets/ezgif.com-video-to-gif.gif" alt="ezgif.com-video-to-gif" style="zoom:50%;" />
 
 #### RoomCurrentSetting([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/RoomCurrentSetting.java))
 
@@ -61,14 +62,18 @@
 * Server 로 부터 받은 데이터를 각  TextView에 설정.
 * SeekBar 이용하여 희망온도, 전구 밝기값을 숫자로 받아 서버로 바로 전송.
 * Toggle Button 을 이용하여 전구를 On/Off 지정한다.
-* ---------------------------GIF
+
+<img src="README.assets/ezgif.com-video-to-gif (1).gif" alt="ezgif.com-video-to-gif (1)" style="zoom:50%;" />
+
+<img src="README.assets/ezgif.com-video-to-gif (2).gif" alt="ezgif.com-video-to-gif (2)" style="zoom:50%;" />
 
 #### AlarmSetting([code](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/fragments/AlarmSetting.java))
 
 * Server에서 현재 유저이름으로 저장된 알람정보를 받아온다.
 * 받아온 정보를 분석하여 저장된 시간과 요일을 체크하여 컴포넌트의 상태를 변경한다.
 * 새로 알람을 지정하여 저장 버튼 터치시 서버로 해당 정보를 JSON 문자열로 전송한다.
-* ---------------------------GIF
+
+<img src="README.assets/ezgif.com-video-to-gif (3).gif" alt="ezgif.com-video-to-gif (3)" style="zoom:50%;" />
 
 
 
@@ -141,7 +146,8 @@
 
 ## VO
 
-* -----------------------ER-Diagram--------------------------------------
+![image-20200801142552957](README.assets/image-20200801142552957.png)
+
 * [Alarm](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/Alarm.java)
 * [AlarmData](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/AlarmData.java)
 * [Guest](https://github.com/Hae-gun/LatteFinalNoShared/blob/master/app/src/main/java/org/techtown/lattefinalnoshared/VO/Guest.java)
@@ -159,7 +165,52 @@
 
 ## Protocol
 
-* 추후 정리
+* Device
+  * 접속
+    * 요청 : Message [ deviceNo, CONNECT, null, null ] 
+    * 응답 (승인) : Message [ deviceNo, CONNECT, SUCCESS, null ]
+    * 응답 (미승인) : Message [ deviceNo, CONNECT, FAIL, null ]
+  * 상태변경
+    * 요청 : Message [ deviceNo, UPDATE, TYPE, SensorData ] 
+    * 응답 (승인) : Message [ roomNo, UPDATE, TYPE, Sensor ]
+    * 응답(실패) : Message [ deciceNo, UPDATE, TYPE, FAIL ]
+* Android
+  * 로그인
+    * 요청 : Message [ null, LOGIN, null, null ]
+    * 응답(승인) : Message [ guestNo, LOGIN, SUCCESS, Guest ]
+    * 응답(미승인) : Message [ null, LOGIN, FAIL, null ]
+  * 재접속
+    * 요청 : Message [ guestNo, RECONN, null, null ]
+    * 응답(성공) : Message [ guestNo, RECONN, SUCCESS, null ]
+    * 응답(실패) : Message [ guestNo, RECONN, FAIL, null ]
+  * 예약정보 조회
+    * 요청 : Message [ guestNo, RESERVLIST, null, null ]
+    * 응답(승인) : Message [ guestNo, RESERVLIST, COUNT, Reservation ]
+    * 응답(미승인) : Message [ null, RESERVLIST, FAIL, null ]
+  * 객실상태 조회
+    * 요청 : Message [ guestNo, ROOMDETAIL, null, Room ]
+    * 응답(승인) : Message [ guestNo, ROOMDETAIL, SUCCESS, RoomDetail ]
+    * 응답(미승인) : Message [ null, ROOMDETAIL, FAIL, null ]
+  * 장치제어 요청
+    * 요청 : Message [ roomNo, CONTROL, TYPE, SensorData ]
+    * 응답(성공) : Message [ deviceNo, CONTROL, TYPE, SensorData ]
+    * 응답(실패) : Message [ null, CONTROL, TYPE, FAIL ]
+  * 알람 조회
+    * 요청 : Message [ guestNo, ALARM, GET, null ]
+    * 응답(승인) : Message [ guestNo, ALARM, GET, Alarm ]
+    * 응답(미승인) : Message [ null, ALARM, GET, FAIL ]
+  * 알람 수정
+    * 요청 : Message [ guestNo, ALARM, UPDATE, Alarm ]
+    * 응답(승인) : Message [ guestNo, ALARM, UPDATE, Alarm ]
+    * 응답(미승인) : Message [ null, ALARM, UPDATE, FAIL ]
+  * 알람 행동 조회
+    * 요청 : Message [ guestNo, ALARMJOB, GET, null ]
+    * 응답(승인) : Message [ guestNo, ALARMJOB, GET, null ]
+    * 응답(미승인) : Message [ null, ALARMJOB, GET, FAIL ]
+  * 알람 행동 수정
+    * 요청 : Message [ guestNo, ALARMJOB, UPDATE, AlarmData ]
+    * 응답(승인) : Message [ guestNo, ALARMJOB, UPDATE, AlarmData ]
+    * 응답(미승인) : Message [ null, ALARMJOB, UPDATE, FAIL ]
 
 ## Library
 
